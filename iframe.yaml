@@ -1,0 +1,11 @@
+plex:
+    title: Plex
+    icon: mdi:tv
+    url: http://192.168.1.164:32400/web
+  indigo:
+    title: Indigo
+    url: http://192.168.1.110:8176
+  music: 
+    title: Music
+    icon: mdi:music
+    url: http://192.168.1.227:8080/addons/webinterface.arch/#/musics/artists/all

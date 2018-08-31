@@ -1,0 +1,137 @@
+
+#  - platform: rest
+#    resource: http://192.168.1.110:8176/devices
+#    body_on: '{"active": "true"}'
+#    body_off: '{"active": "false"}'
+#    is_on_template: '{{value_json.is_active}}'
+#switch:
+##  switches:
+#    arest_pin_four:
+#      command_on: "/usr/bin/curl -X PUT -d outputBinaryStates="0,0,0,0,1,1,1,1" http://192.168.1.110:8176/devices/EZIO2x4"
+#      command_off: "/usr/bin/curl -X GET http://192.168.1.10/digital/4/0"
+#      command_state: "/usr/bin/curl -X GET http://192.168.1.10/digital/4"
+#      value_template: '{{ value == "1" }}'
+#      friendly_name: Garage small CMD
+  
+  # - platform: command_line
+  #   switches:
+  #     security:
+  #       command_on: '/usr/bin/curl -k "http://rc:rc@192.168.1.110:8000/++ssControlMotionCapture?cameraNum=1&arm=1"'
+  #       command_off: '/usr/bin/curl -k "http://rc:rc@192.168.1.110:8000/++ssControlMotionCapture?cameraNum=1&arm=0"'
+  #       command_state: '/usr/bin/curl -k --silent "http://rc:rc@192.168.1.110:8000/++cameramodes?cameraNum=1" | grep -oP "(?<=M:).*"'
+  #       value_template: '{{ value == "ARMED" }}'
+    
+  switch:
+  
+  - platform: mqtt
+    name: "Fan power"
+    state_topic: "stat/fan/POWER"
+    command_topic: "cmnd/fan/POWER"
+    availability_topic: "tele/fan/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  
+  
+  - platform: mqtt
+    name: "Chair power"
+    state_topic: "stat/chair/POWER"
+    command_topic: "cmnd/chair/POWER"
+    availability_topic: "tele/chair/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  
+  
+  - platform: mqtt
+    name: "Deck power"
+    state_topic: "stat/deck/POWER"
+    command_topic: "cmnd/deck/POWER"
+    availability_topic: "tele/deck/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  
+  - platform: mqtt
+    name: "Foyer power"
+    state_topic: "stat/foyer/POWER"
+    command_topic: "cmnd/foyer/POWER"
+    availability_topic: "tele/foyer/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  
+  - platform: mqtt
+    name: "Chandelier power"
+    state_topic: "stat/chandelier/POWER"
+    command_topic: "cmnd/chandelier/POWER"
+    availability_topic: "tele/chandelier/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  
+  - platform: mqtt
+    name: "Sonoff_All"
+    command_topic: "cmnd/sonoffs/power"
+    state_topic: "stat/sonoffs/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+  - platform: mqtt
+    name: "LED Short"
+    command_topic: "cmnd/led/power"
+    state_topic: "stat/led/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+
+
+  - platform: mqtt
+    name: "Garage Small Open"
+    command_topic: "/hooks/devices/bmw/SensorData/Switch"
+    state_topic: "garage/small/state"
+    qos: 1
+    payload_on: "1"
+    payload_off: "0"
+    retain: false
+  - platform: mqtt
+    name: "Garage Small State"
+    command_topic: "/hooks/devices/bmw/SensorData/Switch"
+    state_topic: "garage/small/state"
+    qos: 1
+    payload_on: "1"
+    payload_off: "0"
+    state_open: "0"
+    state_closed: "1"
+    retain: false
+
+  - platform: mqtt
+    name: "Garage Big State"
+    command_topic: "garage/big/open"
+    state_topic: "garage/big/state"
+    qos: 1
+    payload_on: "open"
+    payload_off: "open"
+    state_open: "0"
+    state_closed: "1"
+    retain: false
+    

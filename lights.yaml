@@ -1,0 +1,188 @@
+
+# esp8266 Chinese bulb with AiLight firmware
+#
+# From Site https://github.com/oakbrad/brad-homeassistant-config/blob/master/config/lights.yaml
+
+
+
+
+# LED WS2812b
+- platform: mqtt
+  name: "tvled"
+  retain: false
+  state_topic: "stat/tvled/POWER1"
+  command_topic: "cmnd/tvled/POWER1"
+  availability_topic: "tele/tvled/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  optimistic: false
+  brightness_state_topic: "stat/tvled/Dimmer"
+  brightness_command_topic: "cmnd/tvled/Dimmer"
+  brightness_value_template: "{{ value_json.Dimmer }}"
+  brightness_scale: 100      
+  rgb_state_topic: "stat/tvled/Color"
+  rgb_command_topic: "cmnd/tvled/Color2"
+  rgb_command_mode: hex
+  rgb_command_template: "{{ '%02x%02x%02x' | format(red, green, blue)}}"
+  effect_state_topic: "stat/tvled/Scheme"
+  effect_command_topic: "cmnd/tvled/Scheme"
+  effect_value_template: "{{ value_json.Scheme }}"
+  effect_list:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12  
+- platform: mqtt
+  name: "LED5"
+  retain: false
+  state_topic: "stat/led5/POWER"
+  command_topic: "cmnd/led5/POWER"
+  availability_topic: "tele/led5/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  optimistic: false
+  brightness_state_topic: "stat/led5/Dimmer"
+  brightness_command_topic: "cmnd/led5/Dimmer"
+  brightness_value_template: "{{ value_json.Dimmer }}"
+  brightness_scale: 100      
+  rgb_state_topic: "stat/led5/Color"
+  rgb_command_topic: "cmnd/led5/Color2"
+  rgb_command_mode: hex
+  rgb_command_template: "{{ '%02x%02x%02x' | format(red, green, blue)}}"
+  effect_state_topic: "stat/led5/Scheme"
+  effect_command_topic: "cmnd/led5/Scheme"
+  effect_value_template: "{{ value_json.Scheme }}"
+  effect_list:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12  
+- platform: mqtt
+  name: "LED6"
+  retain: false
+  state_topic: "stat/led6/POWER"
+  command_topic: "cmnd/led6/POWER"
+  availability_topic: "tele/led6/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  optimistic: false
+  brightness_state_topic: "stat/led6/Dimmer"
+  brightness_command_topic: "cmnd/led6/Dimmer"
+  brightness_value_template: "{{ value_json.Dimmer }}"
+  brightness_scale: 100      
+  rgb_state_topic: "stat/led6/Color"
+  rgb_command_topic: "cmnd/led6/Color2"
+  rgb_command_mode: hex
+  rgb_command_template: "{{ '%02x%02x%02x' | format(red, green, blue)}}"
+  effect_state_topic: "stat/led6/Scheme"
+  effect_command_topic: "cmnd/led6/Scheme"
+  effect_value_template: "{{ value_json.Scheme }}"
+  effect_list:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+
+- platform: mqtt
+  name: "LED3"
+  retain: false
+  state_topic: "stat/led3/POWER"
+  command_topic: "cmnd/led3/POWER"
+  availability_topic: "tele/led3/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  optimistic: false
+  brightness_state_topic: "stat/led3/Dimmer"
+  brightness_command_topic: "cmnd/led3/Dimmer"
+  brightness_value_template: "{{ value_json.Dimmer }}"
+  brightness_scale: 100      
+  rgb_state_topic: "stat/led3/Color"
+  rgb_command_topic: "cmnd/led3/Color2"
+  rgb_command_mode: hex
+  rgb_command_template: "{{ '%02x%02x%02x' | format(red, green, blue)}}"
+  effect_state_topic: "stat/led3/Scheme"
+  effect_command_topic: "cmnd/led3/Scheme"
+  effect_value_template: "{{ value_json.Scheme }}"
+  effect_list:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12  
+
+- platform: mqtt
+  name: "luz living1 test"
+  optimistic: false
+  state_topic: "stat/RGBliving1/POWER"
+  command_topic: "cmnd/RGBliving1/POWER"
+  state_value_template: "{{ value_json.POWER }}"
+  on_command_type: "last"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  brightness_state_topic: "stat/RGBliving1/DIMMER"
+  brightness_command_topic: "cmnd/RGBliving1/DIMMER"
+  brightness_value_template: '{{ value_json.Dimmer }}'
+  brightness_scale: 100
+  rgb: true
+  #{"POWER":"ON","Dimmer":3,"Color":"7,7,7,0","HSBColor":"0,0,3","Channel":[3,3,3,0]}
+  rgb_state_topic: "stat/RGBliving1/RESULT"
+  rgb_command_topic: "cmnd/RGBliving1/COLOR"
+  rgb_command_template: "{{ '%02x%02x%02x00' | format(red, green, blue) }}"
+  retain: false
+  white_value: true
+  white_value_command_topic: "cmnd/RGBliving1/channel4" # formato de 0-100
+  #{"POWER":"ON","Dimmer":100,"Color":"FF0000FF","HSBColor":"0,100,100","Channel":[100,0,0,100]}
+  white_value_state_topic: "stat/RGBliving1/RESULT"
+  white_value_scale: 100
+  white_value_template: "{{ value_json.Channel[3] }}"
+  availability_topic : "tele/RGBliving1/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"     
