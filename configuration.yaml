@@ -1,0 +1,365 @@
+# Git repository for HASSIO config file  
+# v1.0
+
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home HASSIO Pi
+  # Location required to calculate the time the sun rises and sets
+       
+  latitude: 40.0672
+  longitude: -82.4702
+
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+introduction:
+hassio:
+# Enables the frontend  test
+recorder:
+logbook:
+# Enables support for tracking state changes over time
+history:
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+frontend:
+  javascript_version: latest
+
+
+
+binary_sensor:
+    - platform: mqtt
+      state_topic: "tele/rfbridge/RESULT"
+      name: 'Pantry Door'
+      value_template: '{{value_json.RfReceived.Data}}'
+      payload_off: 'D7130E'
+      payload_on: 'D7130A'
+      device_class: door
+      optimistic: false
+      qos: 1
+      retain: false
+# E1E20A
+    - platform: mqtt
+      state_topic: "tele/rfbridge/RESULT"
+      name: 'Garage Door'
+      value_template: '{{value_json.RfReceived.Data}}'
+      payload_off: 'E1E20E'
+      payload_on: 'E1E20A'
+      device_class: door
+      optimistic: false
+      qos: 1
+      retain: false
+
+
+zeroconf:
+#wemo:
+#  static:
+#    - 192.168.1.202
+#    - 192.168.1.120
+#    - 192.168.1.200
+#    - 192.168.1.205
+#    - 192.168.1.204
+#influxdb:
+ios:
+http:
+  api_password: rc
+  #base_url: http://hassio.local:8123
+  #cors_allowed_origins:
+  #  - https://reformedreality.com
+  #  - http://reformedreality.com
+  #  
+  #  - http://192.168.1.176:7080
+  #  - https://hassio.local:7080
+
+# Enables configuration UI
+config:
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://hassio.local:3218
+  plex:
+    title: Plex
+    icon: mdi:television
+    url: http://192.168.1.164:32400/web
+  indigo:
+    title: Indigo
+    url: http://192.168.1.110:8176
+  music: 
+    title: Music
+    icon: mdi:music
+    url: http://192.168.1.227:8080/addons/webinterface.arch/#/musics/artists/all
+  
+nest:
+  client_id: 42707d37-d11a-4aac-891e-4bbcfe9d1ee5
+  client_secret: F1rrB6qG4TvGecApE6b8Mb307
+
+
+# device_tracker:
+#   - platform: icloud2
+#     username: rlust@mac.com
+#     password: Lusty911
+#     account_name: icloud RCLust
+#     filter_devices: 'phone'
+
+#http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  enable:
+    - homekit
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+homekit:
+  filter:
+    include_domains:
+      - alarm_control_panel
+      - light
+      - media_player
+      - switch
+      - sensor
+      
+  entity_config:
+    alarm_control_panel.home:
+      code: 1234
+    light.kitchen_table:
+      name: Kitchen Table Light
+    #lock.front_door:
+    #  code: 1234
+    media_player.family_room:
+      feature_list:
+        - feature: on_off
+        - feature: play_pause
+        - feature: play_stop
+        - feature: toggle_mute
+    switch.chair:
+      type: outlet
+
+
+# Weather prediction
+weather:
+  - platform: openweathermap
+    api_key: 43a5eed614d1bb6a5fc02bfc4bc90b6b
+
+# Text to speech
+tts:
+  - platform: google
+  
+  - platform: marytts
+    host: 'localhost'
+    port: 59125
+    codec: 'wav'
+    voice: 'cmu-slt-hsmm'
+    language: 'en-US'
+
+# Cloud
+cloud:
+remote: !include remote.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+light: !include lights.yaml
+##!weather: !include weather.yaml
+
+mqtt:
+  broker: 192.168.1.50
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: rc
+  password: rc
+  protocol: 3.1
+  birth_message:
+    topic: "tele/hass1/LWT"
+    payload: "Online"
+    qos: 1
+    retain: false
+  will_message:
+    topic: "tele/hass1/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: false
+  discovery: true
+  discovery_prefix: homeassistant
+
+canary:
+  username: rlust@mac.com
+  password: rc514131
+
+
+camera:
+  - platform: canary
+  # Webcams
+  #- platform: generic
+  #  name: "Newark Radar"
+  #  still_image_url: https://www.wunderground.com/wundermap?lat=40.068348&lon=-82.461967&zoom=8&pin=&rad=1&rad.type=00Q&wxsn=0&svr=0&cams=0&sat=0&riv=0&mm=0&hur=0
+    
+    
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.110:8000/++video?cameraNum=1&quality=100&req_fps=8
+    #still_image_url: http://192.168.1.110:8000/++image?cameraNum=1&quality=100
+    username: rc
+    password: rc
+    name: Family Room
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.110:8000/++video?cameraNum=2&quality=100&req_fps=8
+    #still_image_url: http://192.168.1.110:8000/++image?cameraNum=2&quality=100
+    username: rc
+    password: rc
+    name: Garage 
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.110:8000/++video?cameraNum=3&quality=100&req_fps=8
+    #still_image_url: http://192.168.1.110:8000/++image?cameraNum=3&quality=100
+    username: rc
+    password: rc
+    name: Deck
+
+  - platform: mjpeg
+    mjpeg_url: http://192.168.1.110:8000/++video?cameraNum=4&quality=100&req_fps=8
+    #still_image_url: http://192.168.1.110:8000/++image?cameraNum=4&quality=100
+    username: rc
+    password: rc
+    name: Front
+
+
+
+media_player:
+  - platform: panasonic_viera
+    host: 192.168.1.130
+    name: FR TV
+  - platform: onkyo
+    host: 192.168.1.145
+    name: FRreceiver
+# Example configuration.yaml entry Google Play Music Desktop Player
+
+  - platform: plex
+  - platform: gpmdp
+    host: 192.168.1.110    
+  
+  - platform: alexa
+    email: "rlust@mac.com"
+    password: "Rc514131!"
+    url: "amazon.com"
+  
+  - platform: kodi
+    name: OSMC
+    host: 192.168.1.227
+    port: 8080
+    username: rc
+    password: rc
+
+  # - platform: itunes
+  #   name: iTunes
+  #   host: 192.168.1.110
+  #   port: 8181
+
+ #   sources:
+ #     pc: 'HTPC'
+ # Mopidy RPI Audio addon for hass.io
+  - platform: mpd
+    host: 192.168.1.176
+    port: 6600
+  #  name: Pi Speaker
+ # Example configuration.yaml platform entry
+
+insteon_local:
+  host: 192.168.1.111
+  username: Incatasi
+  password: 9UnEUCqL
+  timeout: 30
+  port: 25105
+cover:
+  
+  - platform: mqtt
+    name: "Big GD"
+    state_topic: "cmnd/3/POWER2"
+    command_topic: "cmnd/big/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    optomistic: false
+    retain: false
+
+  - platform: mqtt
+    name: "Small GD"
+    state_topic: "cmnd/2/POWER2"
+    command_topic: "cmnd/small/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    optomistic: false
+    retain: false
+
+notify:
+  - name: pushbullet
+    platform: pushbullet
+    api_key: o.WaI8Bn49axy7tiiMd2xfESGAScJ3j0yh
+
+#  - platform: ios
+#    name: iOSiPhone RC
+#    target: '32c8787a-11e3-3bd2-bb29-f9d8daaa900f'
+
+    
+#  - platform: ios
+#    name: IOSipad Kim
+#    target: '8e6ac0bd-db13-3c92-aecd-b5d69d8e228a'
+  
+  - name: Growl
+    platform: gntp
+    hostname: 192.168.1.110   
+  - name: Notify group
+    platform: group
+    services:
+      - service: html5
+        data:
+          target: "imacoffice"
+      - service: html5_nexus  
+      
+  - name: IOS Group Notify
+    platform: group
+    services:
+      - service: ios_iphone_randy
+      - service: ios_iphone_kim 
+      - service: iphone_randy
+      - service: alex_lust_phone
+      - service: ipad
+
+      

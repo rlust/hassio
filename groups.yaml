@@ -1,0 +1,135 @@
+
+nest:
+    name: Nest Thermostat
+    view: no
+    entities:
+      - binary_sensor.family_room_thermostat_fan
+      - binary_sensor.family_room_thermostat_has_leaf
+      - binary_sensor.family_room_thermostat_is_locked
+      - binary_sensor.family_room_thermostat_online
+      - binary_sensor.family_room_thermostat_is_using_emergency_heat
+      - climate.family_room
+      - sensor.family_room_thermostat_humidity
+      - sensor.family_room_thermostat_target
+      - sensor.family_room_thermostat_temperature
+      - sensor.family_room_thermostat_hvac_state
+      - sensor.family_room_thermostat_operation_mode
+      - sensor.away_mode
+
+#group:
+weather_card_forecast:
+  name: Forecast
+  
+  icon: mdi:sun
+  entities:
+    - sensor.forecast_0
+    - sensor.forecast_1
+    - sensor.forecast_2
+    - sensor.forecast_3
+    - sensor.forecast_4
+    - sensor.forecast_5
+    - sensor.forecast_6
+    - sensor.forecast_7
+
+
+
+environment_view:
+  view: yes
+  name: "Environment"
+  icon: mdi:thermometer
+  entities:
+    - group.environment
+    - group.environment_detail
+    - group.climate
+    - group.temp_sensors
+    - group.nest
+    - group.weather_card_forecast
+
+shed_state:
+    view: no
+    name: Shed State
+    icon: mdi:shed
+    entities:
+      - binary_sensor.door_shed_
+      - binary_sensor.shed_door_
+      - binary_sensor.shed_esphome_status
+      - sensor.shed_temperature
+      - sensor.shed_humidity
+      - switch.shed_esphome_restart
+
+led:
+    name: LED
+    entities:
+      - light.led3
+      - light.led6
+      - light.led5
+      - light.tvled
+      - switch.sonoff_oled_newest
+master:
+    name: Master Bedroom
+    entities:
+      - light.2fc024
+      - light.03e496
+      - light.186156
+      - sensor.fan_voltage
+      - light.fan
+      #- sensor.esp32_hum
+      #- sensor.esp32_temp
+      - sensor.master_humidity
+      - sensor.master_temperature
+      - switch.master_restart
+      - binary_sensor.master_esp32_status
+      - switch.chandelier_2
+
+garage_state:
+    view: yes
+    name: Garage Sensors
+    icon: mdi:garage
+    entities:
+      #- switch.garage_big_state
+      #- switch.garage_small_open
+      #- switch.garage_small_state
+      - cover.small_gd
+      - cover.big_gd
+     # - cover.garage_door_small
+      - binary_sensor.side_garage_door_status
+      - binary_sensor.side_garage_
+      - sensor.garage_temperature_2
+      - sensor.garage_humidity_2
+      - binary_sensor.garage_motion
+
+carrs:
+    name: Cars
+    view: yes
+    icon: mdi:car
+    entities:
+      - sensor.porsche_easy_batt_volt
+      - sensor.bmw_hum
+      - sensor.bmw_temp
+      - sensor.bmw_switch
+      - binary_sensor.porsche_voltage_status
+      - sensor.porsche_volt
+      - switch.porsche_volt_restart
+      - sensor.vcc_voltage
+
+
+
+remote:
+  name: Remotes
+  #icon: mdi:tv
+  #view: yes
+  entities:
+    - remote.cable_pwr_toggle
+    - remote.family_room
+    - remote.onkyo_cblvideo2__bddvd
+    - remote.onko_fire_tv__kodi
+    - remote.onkyo_pwr
+    - remote.tv_power
+
+remotefr:
+  name: FR Remotes
+  icon: mdi:tv
+  view: yes
+  entities:
+    - group.all_remotes
+    - group.remotefr

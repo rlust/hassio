@@ -1,0 +1,24 @@
+
+iphonerc:
+  hide_if_away: false
+  icon:
+  mac:
+  name: iPhonerc
+  picture:
+  track: true
+
+kimiphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Kim iphone
+  picture:
+  track: true
+
+alexlustphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: "Alex Lust Phone \U0001F991"
+  picture:
+  track: true
