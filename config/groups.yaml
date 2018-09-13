@@ -1,0 +1,195 @@
+temps:
+  name: Temp Humidity
+  icon: mdi:oil-temperature
+  view: yes
+  entities:
+    - group.temperature
+
+temperature:
+  name: Temperature
+  icon: mdi:oil-temperature
+  entities:
+    - sensor.bmw_temp
+    - sensor.bmw_hum
+    - sensor.garage_temperature
+    - sensor.garage_humidity
+    - sensor.home_rc_home_temperature
+    - sensor.home_rc_home_humidity
+    - sensor.shed_temperature
+    - sensor.shed_humidity
+    - sensor.attic_temp
+    - sensor.attic_hum
+    - sensor.hot_water_pipe
+    - sensor.duct_temp
+
+    
+
+rooms:
+  name: Rooms
+  icon: mdi:home-automation
+  view: yes
+  entities: 
+    - group.master
+    - group.garage
+
+
+doors:
+  name: Doors Entry
+  view: yes
+  icon: mdi:door-open
+  entities:
+    - group.door
+    - group.shed_state
+    - group.garage_state
+    
+door:
+  name: Doors
+  view: no
+  entities:
+    - binary_sensor.deck_door_d6
+    - binary_sensor.front_door_d3_
+    - binary_sensor.garage_door_d5_
+    - binary_sensor.shed_door_
+    - binary_sensor.side_garage_door_status
+    - binary_sensor.side_garage_
+    - group.shed_state
+shed_state:
+  view: no
+  name: Shed State
+  icon: mdi:shed
+  entities:
+    - binary_sensor.door_shed_
+    - binary_sensor.shed_door_
+    - binary_sensor.shed_esphome_status
+    - sensor.shed_temperature
+    - sensor.shed_humidity
+    - switch.shed_esphome_restart
+
+alarm:
+  name: Alarm
+  view: yes
+  icon: mdi:alarm-light
+  entities:
+  - group.alarms
+alarms:
+  name: Alarms
+  entities:
+    - alarm_control_panel.home
+    - sensor.alarm_wifi_signal_
+    - switch.alarm_mcu_restart
+
+light:
+  name: Lights
+  view: yes
+  icon: mdi:lightbulb-on
+  entities: 
+    - group.led
+    - group.all_lights
+    - group.all_switches
+
+led:
+  name: LED
+  entities:
+    - light.led3
+    - light.led6
+    - light.led5
+    - light.tvled
+    - switch.sonoff_oled_newest
+master:
+  name: Master Bedroom
+  entities:
+    - light.2fc024
+    - light.03e496
+    - light.186156
+    - sensor.fan_voltage
+    - light.fan
+    #- sensor.esp32_hum
+    #- sensor.esp32_temp
+    - sensor.master_humidity
+    - sensor.master_temperature
+    - switch.master_restart
+    - binary_sensor.master_esp32_status
+    - switch.chandelier
+garage:  
+  view: no
+  name: Garage Sensors
+  icon: mdi:garage
+  entities:
+    #- switch.garage_big_state
+    #- switch.garage_small_open
+    #- switch.garage_small_state
+    - cover.small_gd
+    - cover.big_gd
+    # - cover.garage_door_small
+    - binary_sensor.side_garage_door_status
+    - binary_sensor.side_garage_
+    - sensor.garage_temperature_2
+    - sensor.garage_humidity_2
+    - binary_sensor.garage_motion
+
+car:
+  name: Autos
+  view: yes
+  icon: mdi:car
+  entities: 
+    - group.carrs
+    - group.garage
+
+carrs:
+  name: Cars
+  entities:
+    - sensor.porsche_easy_batt_volt
+    - sensor.bmw_hum
+    - sensor.bmw_temp
+    - sensor.bmw_switch
+    - binary_sensor.porsche_voltage_status
+    - sensor.porsche_volt
+    - switch.porsche_volt_restart
+    - sensor.vcc_voltage
+systems:
+  name: System Sensors
+  icon: mdi:desktop-classic
+  view: yes
+  entities: 
+    - group.system
+
+system:
+  name: System Sensors
+  icon: mdi:desktop-classic
+  entities: 
+    - sensor.speedtest_download
+    - sensor.speedtest_ping
+    - sensor.speedtest_upload
+    - sensor.cpu_temp
+    - sensor.memory_free
+    - sensor.memory_use_percent
+    - sensor.memory_use
+    - sensor.last_boot
+    - sensor.processor_use
+    - sensor.disk_use_percent_home
+weather_card_forecast:
+  name: Forecast
+  icon: mdi:sun
+  entities:
+    - sensor.forecast_0
+    - sensor.forecast_1
+    - sensor.forecast_2
+    - sensor.forecast_3
+    - sensor.forecast_4
+    - sensor.forecast_5
+    - sensor.forecast_6
+    - sensor.forecast_7
+
+
+
+environment_view:
+  view: yes
+  name: "Environment"
+  icon: mdi:thermometer
+  entities:
+    - group.environment
+    - group.environment_detail
+    - group.climate
+    - group.temp_sensors
+    - group.nest
+    - group.weather_card_forecast

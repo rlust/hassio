@@ -1,0 +1,204 @@
+homeassistant:
+  # New fresh install hassos on 32 gb card
+  # Name of the location where Home Assistant is running
+  name: Hassio Pi New
+  # Location required to calculate the time the sun rises and sets
+  latitude: 40.0673
+  longitude: -82.471
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 300
+  # metric for Metric, imperial for Imperial
+  
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: UTC
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+hassio:
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+
+
+# View all events in a logbook
+recorder:
+logbook:
+logger:
+
+history:
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+# sensor:
+#   - platform: yr
+
+# Text to speech
+
+
+# Cloud
+cloud:
+ios:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://hassio.local:3218
+insteon:
+  host: 192.168.1.111
+  ip_port: 25105
+  username: Incatasi
+  password: 9UnEUCqL
+input_boolean:
+  notify_home:
+    name: Notify when someone arrives home
+    initial: off
+    icon: mdi:car
+mqtt:
+  broker: 192.168.1.50
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: rc
+  password: rc
+  protocol: 3.1
+  birth_message:
+    topic: "tele/hass1/LWT"
+    payload: "Online"
+    qos: 1
+    retain: false
+  will_message:
+    topic: "tele/hass1/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: false
+  discovery: true
+  discovery_prefix: homeassistant
+
+canary:
+  username: rlust@mac.com
+  password: rc514131
+
+# Text to speech
+tts:
+  - platform: google
+  
+  - platform: marytts
+    host: 'localhost'
+    port: 59125
+    codec: 'wav'
+    voice: 'cmu-slt-hsmm'
+    language: 'en-US'  
+device_tracker:
+  - platform: google_maps
+    username: rclusthassio@gmail.com
+    password: Rc514131!
+cover:
+  
+  - platform: mqtt
+    name: "Big GD"
+    state_topic: "cmnd/3/POWER2"
+    command_topic: "cmnd/big/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    optomistic: false
+    retain: false
+
+  - platform: mqtt
+    name: "Small GD"
+    state_topic: "cmnd/2/POWER2"
+    command_topic: "cmnd/small/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    optomistic: false
+    retain: false
+
+notify:
+  - name: pushbullet
+    platform: pushbullet
+    api_key: o.WaI8Bn49axy7tiiMd2xfESGAScJ3j0yh
+media_player:
+  - platform: panasonic_viera
+    host: 192.168.1.132
+    name: FR TV
+  - platform: onkyo
+    host: 192.168.1.145
+    name: FRreceiver
+# Example configuration.yaml entry Google Play Music Desktop Player
+
+  #- platform: plex
+  # - platform: gpmdp
+  #   host: 192.168.1.110    
+  
+  - platform: alexa
+    email: "rlust@mac.com"
+    password: "Rc514131!"
+    url: "amazon.com"
+  
+  - platform: kodi
+    name: OSMC
+    host: 192.168.1.227
+    port: 8080
+    username: rc
+    password: rc
+
+  # - platform: itunes
+  #   name: iTunes
+  #   host: 192.168.1.110
+  #   port: 8181
+
+ #   sources:
+ #     pc: 'HTPC'
+ # Mopidy RPI Audio addon for hass.io
+  - platform: mpd
+    host: 192.168.1.176
+    #port: 6600
+  #  name: Pi Speaker
+ # Example configuration.yaml platform entry

@@ -1,0 +1,97 @@
+front_door_camera:
+    alias: "Show who's at the door"
+    sequence:
+      - service: media_player.turn_on
+        data:
+          entity_id: media_player.fr_tv
+      - service: media_player.play_media
+        data:
+          entity_id: media_player.fr_tv
+          media_content_type: "url"
+          media_content_id: "http://google.com"
+      #- delay:
+      #  seconds: 5
+      - service: media_player.media_stop
+        data:
+          entity_id: media_player.fr_tv
+
+#TTS Script		
+alexa_alarm:
+  alias: 'Alarm System Notification'
+  sequence:
+    - service: media_player.alexa_tts
+      data:
+        entity_id: media_player.kitchen
+        message: "The alarm system has been triggered."
+
+alexa_beep:
+  alias: 'Play Beep'
+  sequence:
+    - service: media_player.alexa_tts
+      data:
+        entity_id: media_player.kitchen
+        message: "Beep"
+
+alexa_notify_test:
+  alias: 'Test Notification'
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.kitchen
+        message: "This is a test"
+
+
+alexa_notify:
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.{{ mplayer }}         
+        message: "{{ tts_msg }}"
+
+audio_notify:
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.{{ mplayer }}         
+        message: "{{ tts_msg }}"
+
+    - service: media_player.alexa_tts
+      data_template:
+        entity_id: media_player.kitchen
+        message: “ Hello! Randy, this is your climate and weather report, The outside temperature is {{states ('sensor.dark_sky_apparent_temperature') }} degrees, the home climate system states the following values for Livingroom, {{states.sensor.lr_temperature_.state}}, Bedroom, {{states.sensor.master_temperature.state}}, and Kitchen, {{states.climate.family_room_2.attributes.current_temperature}} ”
+
+
+audio_notify_weeather:
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.{{ mplayer }}         
+        message: "{{ tts_msg }}"
+
+    - service: media_player.alexa_tts
+      data_template:
+        entity_id: media_player.kitchen
+        message: "Hello Randy!,  The outside temperature is, {{states ('sensor.dark_sky_apparent_temperature') }} degrees , The daytime high is, {{states ('sensor.dark_sky_daytime_high_temperature') }} degrees, and the forcast for today is, {{states.sensor.dark_sky_hourly_summary_2.state }} "
+
+audio_notify_cars:
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.{{ mplayer }}         
+        message: "{{ tts_msg }}"
+
+    - service: media_player.alexa_tts
+      data_template:
+        entity_id: media_player.kitchen
+        message: "Hello Randy!,  The BMW temperature is {{states.sensor.bmw_temp.state }} degrees , The Porsche battery voltage is , {{states.sensor.porsche_easy_batt_volt.state  }} volts,, OK "
+audio_notify_water:
+  sequence: 
+    - service: media_player.alexa_tts
+      data_template:       
+        entity_id: media_player.{{ mplayer }}         
+        message: "{{ tts_msg }}"
+
+    - service: media_player.alexa_tts
+      data_template:
+        entity_id: media_player.bathroom
+        message: "Hello this is Alexa!,  The hot water temperature is {{states.sensor.hot_water_pipe.state }} degrees , The furnance, duct temperature is, {{states.sensor.duct_temp.state }}  degrees,, ok?"
