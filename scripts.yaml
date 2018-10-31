@@ -1,81 +1,213 @@
-front_door_camera:
-    alias: "Show who's at the door"
+
+
+alexa_play:
+  sequence:
+    - service: media_player.media_play
+      data:
+        entity_id: media_player.kitchen
+        media_content_id : "the Ballad of John Henry"
+        #media_content_id : Blank (Silent Track)
+        media_content_type: AMAZON_MUSIC
+msg_rc_who_is_home:
     sequence:
-      - service: media_player.turn_on
-        data:
-          entity_id: media_player.fr_tv
-      - service: media_player.play_media
-        data:
-          entity_id: media_player.fr_tv
-          media_content_type: "url"
-          media_content_id: "http://google.com"
-      #- delay:
-      #  seconds: 5
-      - service: media_player.media_stop
-        data:
-          entity_id: media_player.fr_tv
+      - service: notify.notify
+        data_template:
+          message: >
+            {% if is_state('device_tracker.google_maps_114193578345566022352', 'home') %}
+              Ha, Randy is home!
+            {% else %}
+              Randy is at {{ states('device_tracker.google_maps_114193578345566022352') }}.
+            {% endif %}
+msg_kim_who_is_home:
+    sequence:
+      - service: notify.notify
+        data_template:
+          message: >
+            {% if is_state('device_tracker.google_maps_106953152375077209383', 'home') %}
+              Ha, Kim is home!
+            {% else %}
+              Kim is at {{ states('device_tracker.google_maps_106953152375077209383') }}.
+            {% endif %}
 
-#TTS Script		
+alexa_play_music_classicical:
+  alias: Radio Alexa play Classical Kitchen
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.kitchen
+      media_content_id: Classic FM
+      media_content_type: "TUNEIN"
+alexa_play_music_soft_rock:
+  alias: Radio Alexa Coffeehouse Kitchen
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.kitchen
+      media_content_id: Coffeehouse
+      media_content_type: "TUNEIN"
+
+alexa_play_radio_wtvn:
+  alias: Radio Alexa play Radio WTVN Kitchen
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.kitchen
+      media_content_id: 610 WTVN
+      media_content_type: "iHeartRadio"
+
+front_door_camera:
+  alias: Show who's at the door
+  sequence:
+  - service: media_player.turn_on
+    data:
+      entity_id: media_player.fr_tv
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.fr_tv
+      media_content_type: url
+      media_content_id: http://google.com
+  - service: media_player.media_stop
+    data:
+      entity_id: media_player.fr_tv
+alexa_alarm:
+  alias: Alarm System Notification
+  sequence:
+  - service: media_player.alexa_tts
+    data:
+      entity_id: media_player.kitchen
+      message: The alarm system has been triggered.
+alexa_beep:
+  alias: Beep
+  sequence:
+  - data:
+      entity_id: media_player.kitchen
+      message: Beep
+    service: media_player.alexa_tts
 alexa_notify_test:
-  alias: 'Test Notification'
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.family_room_2
-        message: "This is a test"
+  alias: Test Notification
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: This is a test!
 
+alexa_side_door:
+  alias: Side door Notification
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Alert, Side garage door open!
+
+alexa_kim_arrive:
+  alias: Kim Arrive Notification
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, this is HAL, Kim is home, !
+
+alexa_rc_arrive:
+  alias: RC Arrive Notification
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, this is HAL, Randy is home, !
+alexa_kim_arrive_w:
+  alias: Kim Arrive Work
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, Kim is at work, welcome!
+alexa_kim_leave_w:
+  alias: Kim Left Work
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, Kim, just left work, expect her home soon!
+alexa_kim_leave_home:
+  alias: Kim Left Home
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, Kim, just left homr, travel safe!
+
+alexa_leave_randy_home:
+  alias: Randy Left Home
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: Greetings, Randy, just left home, travel safe!
+
+
+alexa_shed_door:
+  alias: Shed Door Open
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: group.alexamedia
+      message: Outside Event, the shed door was just opened!
 
 alexa_notify:
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.{{ mplayer }}         
-        message: "{{ tts_msg }}"
-
-audio_notify:
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.{{ mplayer }}         
-        message: "{{ tts_msg }}"
-
-    - service: media_player.alexa_tts
-      data_template:
-        entity_id: media_player.family_room_2
-        message: “ Hello! Randy, this is your climate and weather report, The outside temperature is {{states ('sensor.dark_sky_apparent_temperature') }} degrees, the home climate system states the following values for Livingroom, {{states.sensor.lr_temperature_.state}}, Bedroom, {{states.sensor.master_temperature.state}}, and Kitchen, {{states.climate.family_room_2.attributes.current_temperature}} ”
-
-
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.{{ mplayer }}
+      message: '{{ tts_msg }}'
+audio_notify_weather:
+  alias: Weather Report
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.{{ mplayer }}
+      message: '{{ tts_msg }}'
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: 'Hello! Randy, this is your climate and weather report, The outside
+        temperature is {{states (''sensor.dark_sky_apparent_temperature'') }} degrees,
+        the home climate system states the following values for Livingroom, {{''states.sensor.lr_temperature_.state''}},
+        Bedroom, {{''states.sensor.master_temperature.state''}}, and Kitchen, {{''states.climate.family_room_2.attributes.current_temperature''}} '
+        
 audio_notify_weeather:
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.{{ mplayer }}         
-        message: "{{ tts_msg }}"
-
-    - service: media_player.alexa_tts
-      data_template:
-        entity_id: media_player.family_room_2
-        message: "Hello Randy!,  The outside temperature is, {{states ('sensor.dark_sky_apparent_temperature') }} degrees , The daytime high is, {{states ('sensor.dark_sky_daytime_high_temperature') }} degrees, and the forcast for today is, {{states.sensor.dark_sky_hourly_summary_2.state }} "
-
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.{{ mplayer }}
+      message: '{{ tts_msg }}'
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: group.alexamedia
+      message: 'Hello Randy!,  The outside temperature is, {{states (''sensor.dark_sky_apparent_temperature'')
+        }} degrees , The daytime high is, {{states (''sensor.dark_sky_daytime_high_temperature'')
+        }} degrees, and the forcast for today is, {{states.sensor.dark_sky_hourly_summary_2.state
+        }} '
 audio_notify_cars:
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.{{ mplayer }}         
-        message: "{{ tts_msg }}"
-
-    - service: media_player.alexa_tts
-      data_template:
-        entity_id: media_player.family_room_2
-        message: "Hello Randy!,  The BMW temperature is {{states.sensor.bmw_temp.state }} degrees , The Porsche battery voltage is , {{states.sensor.porsche_easy_batt_volt.state  }} volts,, OK "
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.{{ mplayer }}
+      message: '{{ tts_msg }}'
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.kitchen
+      message: 'Hello Randy!,  The BMW temperature is {{states.sensor.bmw_temp.state
+        }} degrees , The Porsche battery voltage is , {{states.sensor.porsche_easy_batt_volt.state  }}
+        volts,, OK '
 audio_notify_water:
-  sequence: 
-    - service: media_player.alexa_tts
-      data_template:       
-        entity_id: media_player.{{ mplayer }}         
-        message: "{{ tts_msg }}"
-
-    - service: media_player.alexa_tts
-      data_template:
-        entity_id: media_player.bathroom
-        message: "Hello this is Alexa!,  The hot water temperature is {{states.sensor.hot_water_pipe.state }} degrees , The furance, duct temperature is, {{states.sensor.duct_temp.state }}  degrees,, hmmm"
+  sequence:
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.{{ mplayer }}
+      message: '{{ tts_msg }}'
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: media_player.bathroom
+      message: 'Hello this is Alexa!,  The hot water temperature is {{states.sensor.hot_water_pipe.state
+        }} degrees , The furnance, duct temperature is, {{states.sensor.duct_temp.state
+        }}  degrees,, ok?'

@@ -1,0 +1,497 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home Londondale
+  # Location required to calculate the time the sun rises and sets
+
+  latitude: 40.0672
+  longitude: -82.4702
+  elevation: 305
+  # C for Celcius, F for Fahrenheit
+  #temperature_unit: F
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+
+# Checks for available updates
+updater:
+# Enables configuration UI
+config:
+
+http:
+  # Uncomment this to add a password (recommended!)
+  # api_password: PASSWORD
+  # Uncomment this if you are using SSL or running in Docker etc
+  # base_url: example.duckdns.org:8123
+  
+# Enables the frontend
+frontend:
+
+# Show links to resources in log and frontend
+introduction:
+
+# Allows you to issue voice commands from the frontend
+#conversation:
+
+# Discover some devices automatically
+discovery:
+
+# Text to speech
+tts:
+  platform: google
+
+# Example configuration.yaml entry with custom phrasesconversation
+conversation:
+    boolean_test:
+        sentence: switch boolean # The phrase it will recognize
+        action:
+            service: input_boolean.toggle
+
+#automation: !include automations.yaml
+
+# Track the sun
+#platform: sun
+  #latitude: 40.0672
+  #longitude: -82.4702
+ # event: sunset
+  #  offset: '-01:00:00'
+
+# View all events in a logbook
+logbook:
+
+# Enables support for tracking state changes over time.
+history:
+
+# Configuration.yaml example
+automation: !include automations.yaml
+
+rest_command:
+  example_request:
+    url: 'http://example.com/'
+# A comma separated list of states that have to be tracked as a single group
+# Grouped states should share the same type of states (ON/OFF or HOME/NOT_HOME)
+# You can also have groups within groups.
+#group:
+group: 
+  Home:
+    - group.office
+    - group.driveway
+    - group.garage
+  family_room:
+    - light.led2
+    - light.FR_Cans
+    - light.FR_Fan
+    - light.FR_Walkway
+    - light.chair
+  office:
+   - light.office
+   #- device_tracker.child_2
+
+# Example configuration.yaml entry
+emulated_hue:
+  host_ip: 192.168.1.50
+  listen_port: 8300
+  advertise_ip: 10.0.0.10
+  advertise_port: 8080
+  off_maps_to_on_domains:
+    - script
+    - scene
+  expose_by_default: true
+  exposed_domains:
+    - light
+    - switch
+    - fan
+    
+
+
+#device_tracker:
+#  platform: asuswrt
+#  host: 192.168.1.1
+#  username: admin
+#  password: rc
+#  hosts: 192.168.1.1-100 # address range
+  # Optional configuration
+
+  # If new discovered devices are tracked by default (default: yes)
+ # track_new_devices: no
+  # Seconds between each scan for new devices (default: 12)
+  #interval_seconds: 12
+  # Seconds to wait till marking someone as not home after not being seen
+  # (default: 180)
+  #consider_home: 180
+  #nmap_tracker: 192.168.1.20-99
+
+media_player:
+
+
+  - platform: panasonic_viera
+    host: 192.168.1.130
+    mac: 8C:C1:21:6F:B2:45
+    name: Family Room TV
+
+  - platform: kodi
+    host: 192.168.1.104
+    #url: http://192.168.1.104:9090/jsonrpc
+    #name: osmc
+    #user: rc
+    #password: rc
+    #enable_websocket: true
+
+ # - platform: apple_tv
+ #   host: 192.168.1.231
+#  login_id: 00000000-0774-606f-4118-b528d1164962)
+
+  - platform: onkyo
+    host: 192.168.1.145
+    name: receiver
+    sources:
+      pc: 'XBMC'
+      video3: 'Apple_tv'
+      video2: 'Cable'
+      video1: 'video1'
+      fm: 'FM'
+      am: 'AM'
+      internet-radio: 'internet-radio'
+      bd-dvd: 'Blue-Ray DVD'
+
+  - platform: openhome
+
+# Example configuration.yaml entry
+sensor:
+  - platform: yweather
+    monitored_conditions:
+      - weather
+      - weather_current
+      - temp_min
+      - temp_max
+      - wind_speed
+      - pressure
+      - visibility
+      - humidity
+      - temperature
+
+sensor 8:
+  platform: darksky
+  api_key: 9687683ab89181d52cb96254af23ca08
+  monitored_conditions:
+    - summary
+    - icon
+    - nearest_storm_distance
+    - nearest_storm_bearing
+    - precip_type
+    - precip_intensity
+    - precip_probability
+    - temperature
+    - apparent_temperature
+    - dew_point
+    - wind_speed
+    - wind_bearing
+    - cloud_cover
+    - humidity
+    - pressure
+    - visibility
+    - ozone
+
+sensor 3:
+  platform: systemmonitor
+  resources:
+    - type: 'disk_use_percent'
+      arg: '/'
+    - type: 'disk_use_percent'
+      arg: '/home'
+    - type: 'disk_use'
+      arg: '/home'
+    - type: 'disk_free'
+      arg: '/'
+    - type: 'memory_use_percent'
+    - type: 'memory_use'
+    - type: 'memory_free'
+    - type: 'processor_use'
+    - type: 'process'
+      arg: 'octave-cli'
+
+sensor 9:
+  platform: yahoo_finance
+  symbols:
+    - AAPL
+    - GOOGL
+    - PRK
+    - AMZN
+
+camera Family Room:
+  - platform: generic
+    still_image_url: http://192.168.1.102:25111/
+    username: admin
+    password: rc
+
+camera:
+  platform: foscam
+  ip: 192.168.1.103
+  name: Family Room
+  port: 25110
+  username: admin
+  password: rc
+
+camera 2:
+  platform: foscam
+  ip: 192.168.1.102
+  name: DriveWay
+  port: 25111
+  username: admin
+  password: rc
+
+wemo:
+  static:
+    - 192.168.1.201
+    - 192.168.1.202
+insteon:
+  host: 192.168.1.111
+  ip_port: 25105
+  username: Incatasi
+  password: 9UnEUCqL
+  hub_version: 2
+# insteon_local:
+#   host: 192.168.1.154
+#   username: Richard0
+#   password: 2LubgkG3
+#   timeout: 10
+#   port: 25105
+
+light:
+  - platform: insteon_local
+
+#switch:
+#  - platform: insteon_local
+
+# mqtt:
+#   broker: 192.168.1.50
+#   port: 1883
+#   client_id: home-assistant-1
+#   keepalive: 60
+#   username: rc
+#   password: rc
+#   protocol: 3.1
+#   birth_message:
+#     topic: "tele/hass1/LWT"
+#     payload: "Online"
+#     qos: 1
+#     retain: true
+#   will_message:
+#     topic: "tele/hass1/LWT"
+#     payload: "Offline"
+#     qos: 1
+#     retain: true
+
+switch:
+  - platform: insteon_local
+  
+  - platform: mqtt
+    name: "led"
+    state_topic: "stat/led/POWER"
+    command_topic: "cmnd/led/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "led2"
+    state_topic: "stat/led2/POWER"
+    command_topic: "cmnd/led2/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "led3"
+    state_topic: "stat/led3/POWER"
+    command_topic: "cmnd/led3/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "chair"
+    state_topic: "stat/chair/POWER"
+    command_topic: "cmnd/chair/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "foyer"
+    state_topic: "stat/foyer/POWER"
+    command_topic: "cmnd/foyer/POWER"
+    qos: 0
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "deck"
+    state_topic: "stat/deck/POWER"
+    command_topic: "cmnd/deck/power"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "chandilier"
+    state_topic: "stat/chandilier/POWER"
+    command_topic: "cmnd/chandilier/POWER"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "fan"
+    state_topic: "stat/fan/POWER"
+    command_topic: "cmnd/fan/POWER"
+    payload_on: "ON"
+    payload_off: "OFF"
+    optimistic: false
+    retain: true
+
+  - platform: mqtt
+    name: "humidifier"
+    state_topic: "stat/humidifier/POWER"
+    command_topic: "cmnd/humidifier/POWER"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+  - platform: mqtt
+    name: "stereo"
+    state_topic: "stat/stereo/POWER"
+    command_topic: "cmnd/stereo/POWER"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
+
+
+sensor Sonoff:
+  - platform: mqtt
+    name: "Deck_Temperature"
+    state_topic: "tele/deck/SENSOR"
+    value_template: "{{ value_json['AM2301'].Temperature }}"
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Deck_Humidity"
+    state_topic: "tele/deck/SENSOR"
+    value_template: "{{ value_json['AM2301'].Humidity }}"
+    unit_of_measurement: "%"
+    qos: 1
+
+  - platform: mqtt
+    name: "LR_Temperature"
+    state_topic: "tele/humidifier/SENSOR"
+    value_template: "{{ value_json['AM2301-14'].Temperature }}"
+    unit_of_measurement: "°C"
+    
+  - platform: mqtt
+    name: "LR_Humidity"
+    state_topic: "tele/humidifier/SENSOR"
+    value_template: "{{ value_json['AM2301-14'].Humidity }}"
+    unit_of_measurement: "%"
+
+  - platform: mqtt
+    name: "Energy"
+    state_topic: "tele/fan/ENERGY"
+    value_template: "{{ value_json.Today }}"
+    unit_of_measurement: "kWh"
+  - platform: mqtt
+    name: "Power"
+    state_topic: "tele/fan/ENERGY"
+    value_template: "{{ value_json.Power }}"
+    unit_of_measurement: "W"
+  - platform: mqtt
+    name: "Voltage"
+    state_topic: "tele/fan/ENERGY"
+    value_template: "{{ value_json.Voltage }}"
+    unit_of_measurement: "V"  
+  - platform: rest
+    resource: http://192.168.1.110:8176/variables/InsideTemp.json
+  
+
+sensor Indigo:
+  platform: mqtt
+  state_topic: "test"
+  name: "Indogo"
+  qos: 0
+  unit_of_measurement: "°On/Off"
+
+sensor RCiPhone:
+  platform: mqtt
+  state_topic: "owntracks/rc/rc"
+  name: "RCiPhone"
+  qos: 0
+  unit_of_measurement: "°Off"
+
+sensor KIMiPhonehom:
+  platform: mqtt
+  state_topic: "owntracks/rc/kim"
+  name: "KIMi"
+  qos: 0
+  unit_of_measurement: "°Off"
+
+sensor 22:
+  platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+    - 'date_time'
+    - 'time_date'
+    - 'time_utc'
+    - 'beat'
+
+
+
+#mqtt2:
+#  broker: 192.168.1.110
+#  port: 1883
+#  client_id: home-assistant-rc
+#  keepalive: 60
+#  username: rc
+#  password: rc
+  # Optional, if you want encryption
+  # (doesn't really matter because broker is public)
+  #port: 8883
+  # Download certificate from http://test.mosquitto.org/ssl/mosquitto.org.crt
+  #certificate: /Users/rc/.homeassistant/mosquitto.org.crt
+
+#device_tracker 2:
+#  platform: mqtt2
+
+#device_tracker_own:
+#  platform: owntracks
+
+zone:
+  name: School
+  latitude: 39.8773367
+  longitude: -81.2494053
+  # Optional radius in meters (default: 100)
+  radius: 250
+  # Optional icon to show instead of name
+  icon: mdi:school
+
+zone 2:
+  name: Work
+  latitude: 40.03
+  longitude: -82.47
+
+# This will override the default home zone
+zone 3:
+  name: Home_London
+  latitude: 40.0673
+  longitude: -82.4706
+  radius: 100
+  icon: mdi:account-multiple

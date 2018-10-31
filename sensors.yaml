@@ -1,476 +1,380 @@
-#sensor:
-  
+- platform: yr
 
- # - platform: influxdb
- #   queries:
- #     - name: mean value of sensor.deck_temperature
- #       where: '"name" = ''sensor.deck_temperature'''
- #       measurement: '"°F"'
- # /ESP_Easy32/TempH/Humidity  /ESP_Easy32/TempH/Temperature 
+# - platform: alpha_vantage
+#   api_key: A7ACIM69KYXNEOTN
+#   symbols:
+#       - name: Park National
+#         currency: USD
+#         symbol: PRK
+#       - name: Apple
+#         currency: USD
+#         symbol: AAPL
+#     foreign_exchange:
+#       - from: BTC
+#         to: USD
+#         name: Bitcoin
   
- # sensor:  
-  
-  
-  
-  - platform: time_date
-    display_options:
-        - 'time'
-        - 'date'
-        - 'date_time'
-        - 'time_date'
-        - 'time_utc'
-        - 'beat'
-  - platform: plex
-    entity_namespace: 'plex'
-    include_non_clients: true
-    scan_interval: 5
-    show_all_controls: false
-    use_custom_entity_ids: true
-    use_episode_art: true
-    remove_unavailable_clients: true
-    client_remove_interval: 600
-  
-  - platform: rest
-    name: Sonoff latest release
-    resource: https://api.github.com/repos/arendst/Sonoff-Tasmota/releases/latest
-    value_template: '{{ value_json.tag_name }}'
-    headers:
-      Accept: application/vnd.github.v3+json
-      Content-Type: application/json
-      User-Agent: Home Assistant REST sensor 
-  - platform: mqtt
-    name: Sonoff Chair Version
-    state_topic: "stat/chair/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Deck Version
-    state_topic: "stat/deck/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Humidifier Version
-    state_topic: "stat/humidifier/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Foyer Version
-    state_topic: "stat/foyer/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Fan Version
-    state_topic: "stat/fan/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Shop Version
-    state_topic: "stat/shop/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
-  - platform: mqtt
-    name: Sonoff Chandlier Version
-    state_topic: "stat/chandlier/STATUS2"
-    value_template: "{{ value_json['StatusFWR'].Version }}"
+  # symbols:
+  #   - AAPL
+  #   - ACN
+  #   - AMZN
+  #   - GE
+  #   - BP
+  #   - BSJI
+  #   - PRK
+  #   - BX
+  #   - DGRO
+  #   - QQQ
+  #   - PTIAX
+  #   - .DJI
 
-  
-  - platform: iperf3
-    host: iperf.he.net
-    monitored_conditions:
-      - download
-      - upload
-  
-  - platform: mqtt
-    state_topic: '/bmw/voltage'
-    name: 'BMW Batt Volt'
-    unit_of_measurement: 'V'
-  
-  - platform: mqtt
-    name: "Side  Garage Door"
-    state_topic: "/tele/door/SENSOR"
-#    value_template: "{{ value_json.Temperature }}"
-#    unit_of_measurement: ""
-  
-  
-  - platform: mqtt
-    state_topic: '/porsche/Voltage'
-    name: 'Porsche Easy Batt Volt'
-    unit_of_measurement: 'V'
-  
-  - platform: mqtt
-    state_topic: '/ESP_Easy32/TempH/Temperature'
-    name: 'ESP32 Temp'
-    unit_of_measurement: '°C'
-  - platform: mqtt
-    state_topic: '/ESP_Easy32/TempH/Humidity'
-    name: 'ESP32 Hum'
-    unit_of_measurement: '%'
-  
-  - platform: mqtt
-    state_topic: 'tele/attic/SENSOR'
-    name: 'Attic Temp'
-    unit_of_measurement: '°F'
-    value_template: "{{ value_json['AM2301'].Temperature }}"
+- platform: openexchangerates
+  api_key: ecc54bc134fc4a4eb95fbac35268276c
+  quote: EUR
 
-  - platform: mqtt
-    state_topic: 'tele/attic/SENSOR'
-    name: 'Attic Hum'
-    unit_of_measurement: '%'
-    value_template: "{{ value_json['AM2301'].Humidity }}"
 
-  - platform: mqtt
-    state_topic: '/hooks/devices/base/SensorData/Water'
-    name: 'Hot Water Pipe'
-    unit_of_measurement: '°C'
-   # value_template: '{{ value_json.DHT.Temperature }}' 
 
-  - platform: mqtt
-    state_topic: '/hooks/devices/base/SensorData/Duct'
-    name: 'Duct Temp'
-    unit_of_measurement: '°C'
-  
-  - platform: mqtt
-    state_topic: '/hooks/devices/bmw/SensorData/Temperature'
-    name: 'BMW Temp'
-    unit_of_measurement: '°F'
-  
-  - platform: mqtt
-    state_topic: '/hooks/devices/bmw/SensorData/Switch'
-    name: 'BMW Switch'
-
-    #unit_of_measurement: '°F'
-  - platform: mqtt
-    state_topic: '/hooks/devices/bmw/SensorData/Humidity'
-    name: 'BMW Hum'
-    unit_of_measurement: '%' 
-
-  - platform: mqtt
-    state_topic: '/hooks/devices/office/SensorData/Temperature'
-    name: 'Office Temp'
-    unit_of_measurement: '°F'
-
-  - platform: mqtt
-    state_topic: '/hooks/devices/office/SensorData/Humidity'
-    name: 'Office Hum'
-    unit_of_measurement: '%' 
-
-  - platform: mqtt
-    state_topic: 'stat/sonoff/STATUS10'
-    command_topic: 'cmnd/sonoff/status'
-    payload: '10'
-    name: 'Temperature'
-    unit_of_measurement: '°F'
-    value_template: '{{ value_json.StatusSNS.AM2301.Temperature }}'
-# changed to AM2301
-  - platform: mqtt
-    state_topic: 'stat/sonoff/STATUS10'
-    name: 'Humidity'
-    unit_of_measurement: '%'
-    value_template: '{{ value_json.StatusSNS.AM2301.Humidity }}'
-
-  - platform: mqtt
-    state_topic: 'tele/sonoff/SENSOR'
-    name: 'Temperature'
-    unit_of_measurement: '°F'
-    value_template: '{{ value_json.DHT.Temperature }}'
-  
-  - platform: time_date
-    display_options:
-      - 'time'
-  - platform: yr
-  #- platform: random
- 
-  - platform: mqtt
-    state_topic: "tele/fan/SENSOR"
-    name: "Fan Power"
-    unit_of_measurement: "kWh"
-    value_template: "{{ value_json['ENERGY'].Power }}"
+- platform: mqtt
+  state_topic: "tele/fan/SENSOR"
+  name: "Fan Power"
+  unit_of_measurement: "kWh"
+  value_template: "{{ value_json['ENERGY'].Power }}"
 # ESP Easy Theatre /hooks/devices/164/SensorData/Temperature
 
-  - platform: mqtt
-    name: "Theatre Temperature"
-    state_topic: "/hooks/devices/164/SensorData/Temperature"
+- platform: mqtt
+  name: "Theatre Temperature"
+  state_topic: "/hooks/devices/164/SensorData/Temperature"
 #    value_template: "{{ value_json.Temperature }}"
-    unit_of_measurement: "°C"
-  - platform: mqtt
-    name: "Theatre Humidity"
-    state_topic: "/hooks/devices/164/SensorData/Humidity"
-    unit_of_measurement: "%"
-  - platform: mqtt
-    name: "Garage Temperature"
-    state_topic: "/hooks/devices/garage/SensorData/Temperature"
+  unit_of_measurement: "°C"
+- platform: mqtt
+  name: "Theatre Humidity"
+  state_topic: "/hooks/devices/164/SensorData/Humidity"
+  unit_of_measurement: "%"
+- platform: mqtt
+  name: "Garage Temperature"
+  state_topic: "/hooks/devices/garage/SensorData/Temperature"
 #    value_template: "{{ value_json.Temperature }}"
-    unit_of_measurement: "°C" 
-  - platform: mqtt
-    name: "Garage Humidity"
-    state_topic: "/hooks/devices/garage/SensorData/Humidity"
-    unit_of_measurement: "%"
+  unit_of_measurement: "°C" 
+- platform: mqtt
+  name: "Garage Humidity"
+  state_topic: "/hooks/devices/garage/SensorData/Humidity"
+  unit_of_measurement: "%"
 
-  - platform: mqtt
-    name: "Fan Energy"
-    state_topic: "tele/fan/SENSOR"
-    value_template: "{{ value_json['ENERGY'].Today }}"
-    unit_of_measurement: "kWh"
-  - platform: mqtt
-    name: "Fan Current"
-    state_topic: "tele/fan/SENSOR"
-    value_template: "{{ value_json['ENERGY'].Current }}"
-    unit_of_measurement: "A"
-  - platform: mqtt
-    name: "Fan Voltage"
-    state_topic: "tele/fan/SENSOR"
-    value_template: "{{ value_json['ENERGY'].Voltage }}"
-    unit_of_measurement: "V"
+- platform: mqtt
+  name: "Fan Energy"
+  state_topic: "tele/fan/SENSOR"
+  value_template: "{{ value_json['ENERGY'].Today }}"
+  unit_of_measurement: "kWh"
+- platform: mqtt
+  name: "Fan Current"
+  state_topic: "tele/fan/SENSOR"
+  value_template: "{{ value_json['ENERGY'].Current }}"
+  unit_of_measurement: "A"
+- platform: mqtt
+  name: "Fan Voltage"
+  state_topic: "tele/fan/SENSOR"
+  value_template: "{{ value_json['ENERGY'].Voltage }}"
+  unit_of_measurement: "V"
 
-  - platform: mqtt
-    name: "Deck Temperature"
-    state_topic: "tele/deck/SENSOR"
-    value_template: "{{ value_json['AM2301'].Temperature }}"
-    unit_of_measurement: "°F"
-  - platform: mqtt
-    name: "Deck Humidity"
-    state_topic: "tele/deck/SENSOR"
-    value_template: "{{ value_json['AM2301'].Humidity }}"
-    unit_of_measurement: "%"
+- platform: mqtt
+  name: "Deck Temperature"
+  state_topic: "tele/deck/SENSOR"
+  value_template: "{{ value_json['AM2301'].Temperature }}"
+  unit_of_measurement: "°F"
+- platform: mqtt
+  name: "Deck Humidity"
+  state_topic: "tele/deck/SENSOR"
+  value_template: "{{ value_json['AM2301'].Humidity }}"
+  unit_of_measurement: "%"
 
-  - platform: mqtt
-    name: "LR Temperature "
-    state_topic: "tele/humidifier/SENSOR"
-    value_template: "{{ value_json['AM2301'].Temperature }}"
-    unit_of_measurement: "°F"
-  - platform: mqtt
-    name: "LR Humidity "
-    state_topic: "tele/humidifier/SENSOR"
-    value_template: "{{ value_json['AM2301'].Humidity }}"
-    unit_of_measurement: "%"
+- platform: mqtt
+  name: "LR Temperature "
+  state_topic: "tele/humidifier/SENSOR"
+  value_template: "{{ value_json['AM2301'].Temperature }}"
+  unit_of_measurement: "°F"
+- platform: mqtt
+  name: "LR Humidity "
+  state_topic: "tele/humidifier/SENSOR"
+  value_template: "{{ value_json['AM2301'].Humidity }}"
+  unit_of_measurement: "%"
 
-  - platform: mqtt
-    name: "Shop Temperature"
-    state_topic: "tele/shop/SENSOR"
-    value_template: "{{ value_json['AM2301'].Temperature }}"
-    unit_of_measurement: "°F"
-  - platform: mqtt
-    name: "Shop Humidity"
-    state_topic: "tele/shop/SENSOR"
-    value_template: "{{ value_json['AM2301'].Humidity }}"
-    unit_of_measurement: "%"
+- platform: mqtt
+  name: "Shop Temperature"
+  state_topic: "tele/shop/SENSOR"
+  value_template: "{{ value_json['AM2301'].Temperature }}"
+  unit_of_measurement: "°F"
+- platform: mqtt
+  name: "Shop Humidity"
+  state_topic: "tele/shop/SENSOR"
+  value_template: "{{ value_json['AM2301'].Humidity }}"
+  unit_of_measurement: "%"
 
-  - platform: mqtt
-    name: "LED2"
-    command_topic: "cmnd/led2/POWER1"
-    state_topic: "stat/led2/POWER1"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
 
-  - platform: yweather
-    view: yes
-    monitored_conditions:
-      - weather
-      - weather_current
-      - temp_min
-      - temp_max
-      - wind_speed
-      - pressure
-      - visibility
-      - humidity
-      - temperature
-# Dark Sky weather prediction test
-  - platform: darksky
-    api_key: 9687683ab89181d52cb96254af23ca08
-    forecast:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-    monitored_conditions:
-      - summary
-      - precip_probability
-      - wind_speed
-      - cloud_cover
-      - icon
-      - temperature_low
-      - temperature_high
-      - daily_summary
-      - hourly_summary
+- platform: mqtt
+  state_topic: '/porsche/Voltage'
+  name: 'Porsche Easy Batt Volt'
+  unit_of_measurement: 'V'
+  
+- platform: mqtt
+  state_topic: '/ESP_Easy32/TempH/Temperature'
+  name: 'ESP32 Temp'
+  unit_of_measurement: '°C'
+- platform: mqtt
+  state_topic: '/ESP_Easy32/TempH/Humidity'
+  name: 'ESP32 Hum'
+  unit_of_measurement: '%'
+  
+- platform: mqtt
+  state_topic: 'tele/attic/SENSOR'
+  name: 'Attic Temp'
+  unit_of_measurement: '°F'
+  value_template: "{{ value_json['AM2301'].Temperature }}"
 
-  - platform: season
-  - platform: template
-    sensors:
-      forecast_0:
-        friendly_name: "Today"
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon.state ~ '.png'}}
-      forecast_1:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (1 * 86400 ) -%}
-          {{ date | timestamp_custom("Tomorrow (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_1.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_1.state ~ '.png'}}
-      forecast_2:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (2 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_2.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_2.state ~ '.png'}}
-      forecast_3:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (3 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_3.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_3.state ~ '.png'}}
-      forecast_4:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (4 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_4.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_4.state ~ '.png'}}
-      forecast_5:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (5 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-          {{states.sensor.dark_sky_daytime_high_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_5.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_5.state ~ '.png'}}
-      forecast_6:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (6 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-            {{states.sensor.dark_sky_daytime_high_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_6.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_6.state ~ '.png'}}
-      forecast_7:
-        friendly_name_template: >
-          {%- set date = as_timestamp(now()) + (7 * 86400 ) -%}
-          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
-        value_template: >
-            {{states.sensor.dark_sky_daytime_high_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_7.state|round(0)}}%
-        entity_picture_template: >-
-          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_7.state ~ '.png'}}
+- platform: mqtt
+  state_topic: 'tele/attic/SENSOR'
+  name: 'Attic Hum'
+  unit_of_measurement: '%'
+  value_template: "{{ value_json['AM2301'].Humidity }}"
 
-  - platform: darksky 
-    api_key: 9687683ab89181d52cb96254af23ca08
-    monitored_conditions:
-      - summary
-      - icon
-      - nearest_storm_distance
-      - nearest_storm_bearing
-      - precip_type
-      - precip_intensity
-      - precip_probability
-      - temperature
-      - apparent_temperature
-      - dew_point
-      - wind_speed
-      - wind_bearing
-      - cloud_cover
-      - humidity
-      - pressure
-      - visibility
-      # - ozone
-      - minutely_summary
-      - hourly_summary
-      - daily_summary
-      - temperature_max
-      - temperature_min
-      - apparent_temperature_max
-      - apparent_temperature_min
-      - precip_intensity_max
+- platform: mqtt
+  state_topic: '/hooks/devices/base/SensorData/Water'
+  name: 'Hot Water Pipe'
+  unit_of_measurement: '°C'
+  # value_template: '{{ value_json.DHT.Temperature }}' 
+
+- platform: mqtt
+  state_topic: '/hooks/devices/base/SensorData/Duct'
+  name: 'Duct Temp'
+  unit_of_measurement: '°C'
+
+- platform: mqtt
+  state_topic: '/hooks/devices/bmw/SensorData/Temperature'
+  name: 'BMW Temp'
+  unit_of_measurement: '°F'
+
+- platform: mqtt
+  state_topic: '/hooks/devices/bmw/SensorData/Switch'
+  name: 'BMW Switch'
+
+  #unit_of_measurement: '°F'
+- platform: mqtt
+  state_topic: '/hooks/devices/bmw/SensorData/Humidity'
+  name: 'BMW Hum'
+  unit_of_measurement: '%' 
+- platform: darksky
+  api_key: 9687683ab89181d52cb96254af23ca08
+  forecast:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+  monitored_conditions:
+    - summary
+    - precip_probability
+    - wind_speed
+    - cloud_cover
+    - icon
+    - temperature_low
+    - temperature_high
+    - daily_summary
+    - hourly_summary
+    - humidity
+    - temperature
+    - wind_bearing
+    - pressure
+    - visibility
+  update_interval:
+    minutes: 5
+
+- platform: season
+- platform: template
+  sensors:
+    forecast_0:
+      friendly_name: "Today"
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon.state ~ '.png'}}
+    forecast_1:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (1 * 86400 ) -%}
+        {{ date | timestamp_custom("Tomorrow (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_1.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_1.state ~ '.png'}}
+    forecast_2:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (2 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_2.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_2.state ~ '.png'}}
+    forecast_3:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (3 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_3.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_3.state ~ '.png'}}
+    forecast_4:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (4 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_4.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_4.state ~ '.png'}}
+    forecast_5:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (5 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+        {{states.sensor.dark_sky_daytime_high_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_5.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_5.state ~ '.png'}}
+    forecast_6:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (6 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_6.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_6.state ~ '.png'}}
+    forecast_7:
+      friendly_name_template: >
+        {%- set date = as_timestamp(now()) + (7 * 86400 ) -%}
+        {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+      value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_7.state|round(0)}}%
+      entity_picture_template: >-
+        {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_7.state ~ '.png'}}
+
+- platform: darksky 
+  api_key: 9687683ab89181d52cb96254af23ca08
+  monitored_conditions:
+    - summary
+    - icon
+    - nearest_storm_distance
+    - nearest_storm_bearing
+    - precip_type
+    - precip_intensity
+    - precip_probability
+    - temperature
+    - apparent_temperature
+    - dew_point
+    - wind_speed
+    - wind_bearing
+    - cloud_cover
+    - humidity
+    - pressure
+    - visibility
+    # - ozone
+    - minutely_summary
+    - hourly_summary
+    - daily_summary
+    - temperature_max
+    - temperature_min
+    - apparent_temperature_max
+    - apparent_temperature_min
+    - precip_intensity_max
+
+
 
 # Monitor host system
-  - platform: systemmonitor
-    resources:
-    - type: disk_use_percent
-      arg: /home
-    - type: memory_free
-    - type: processor_use
-    - type: last_boot
-    - type: memory_use
-    - type: memory_use_percent
+- platform: systemmonitor
+  resources:
+  - type: disk_use_percent
+    arg: /home
+  - type: memory_free
+  - type: processor_use
+  - type: last_boot
+  - type: memory_use
+  - type: memory_use_percent
 
-  # Monitor host cpu temp
-  - platform: command_line
-    name: CPU Temp
-    command: "cat /sys/class/thermal/thermal_zone0/temp"
-    unit_of_measurement: "°C"
-    value_template: '{{ value|multiply(0.001)|round }}'
+# Monitor host cpu temp
+- platform: command_line
+  name: CPU Temp
+  command: "cat /sys/class/thermal/thermal_zone0/temp"
+  unit_of_measurement: "°C"
+  value_template: '{{ value|multiply(0.001)|round }}'
 
-  # Speedtest.net
-  - platform: speedtest
-    minute:
-      - 17
-    # hour:
-      # - 0
-      # - 4
-      # - 8
-      # - 12
-      # - 16
-      # - 20
-    monitored_conditions:
-      - ping
-      - download
-      - upload
+# Speedtest.net
+- platform: speedtest
+  minute:
+    - 17
+  # hour:
+    # - 0
+    # - 4
+    # - 8
+    # - 12
+    # - 16
+    # - 20
+  monitored_conditions:
+    - ping
+    - download
+    - upload
 
-  # Alarm Clock sensors
-  - platform: time_date
-    display_options:
-    - 'time'
-  
-  - platform: template
-    sensors:
-      solar_angle:
-        friendly_name: "Sun Angle"
-        unit_of_measurement: '°'
-        value_template: "{{ '%+.1f'|format(states.sun.sun.attributes.elevation) }}"
-  - platform: template
-    
-    sensors:
-      alarm_clock_hour:
-        value_template: '{{ states.input_number.alarm_clock_hour.state|int }}'
-      alarm_clock_minute:
-        value_template: '{{ states.input_number.alarm_clock_minute.state|int }}'
-      alarm_clock_time:
-        value_template: >-
-          {{ states.sensor.alarm_clock_hour.state }}:
-          {%- if states.sensor.alarm_clock_minute.state|length == 1 -%}
-            0
-          {%- endif -%}
-            {{ states.sensor.alarm_clock_minute.state }}
-      alarm_clock_time_long:
-        value_template: >-
-          {% if states.sensor.alarm_clock_hour.state|length == 1 -%}
-            0
-          {%- endif -%}
-            {{ states.sensor.alarm_clock_hour.state }}:
-          {%- if states.sensor.alarm_clock_minute.state|length == 1 -%}
-            0
-          {%- endif -%}
-            {{ states.sensor.alarm_clock_minute.state }}
-      date_odd:
-        value_template: >-
-            {%- if states("sensor.date")|list|last|int % 2 == 0 %}
-                even
-            {% else %}
-                odd
-            {%- endif %}
-      batt_multi_sensor:
-        friendly_name: 'Multi-Sensor Battery'
-        value_template: '{{ states.binary_sensor.multi_sensor_4.attributes.battery_level|replace("%","")|int }}'
-        unit_of_measurement: '%'
-        icon_template: >-
-          {% if states.binary_sensor.multi_sensor_4.attributes.battery_level|replace("%","")|int > 90 -%}
-          mdi:battery
-          {%- else -%}
-          mdi:battery-{{ (states.binary_sensor.multi_sensor_4.attributes.battery_level|replace("%","")|int + 5)|round(-1)|int }}
-          {%- endif %}
-                
+# - platform: rest
+#   name: json hai
+#   resource: http://192.168.1.110:9399/api/controller.zones
+#   username: rc
+#   password: rc
+#   authentication: basic
+#   headers:
+#     User-Agent: Home Assistant
+#     Content-Type: application/json
+#   value_template: '{{ value_json.time }}'
+
+
+
+# - platform: template
+#   sensors:
+#     media_player_kodi_title:
+#       friendly_name: Title
+#       value_template: >-
+#         {%- if states.media_player.kodi.state == "playing" or "paused" -%}
+#           {%- if states.media_player.kodi.attributes.media_content_type == "tvshow" -%}
+#             S{%- if states.media_player.kodi.attributes.media_season < 10 -%}0{%- endif -%}{{ states.media_player.kodi.attributes.media_season }}E{%- if states.media_player.kodi.attributes.media_episode < 10 -%}0{%- endif -%}{{ states.media_player.kodi.attributes.media_episode }} - {{ states.media_player.kodi.attributes.media_title }}
+#           {%- else -%}
+#             {{ states.media_player.kodi.attributes.media_title }}
+#           {%- endif -%}
+#         {%- else -%}
+          
+#         {%- endif -%}
+#       icon_template: mdi:television-classic
+#     media_player_kodi_artist:
+#       friendly_name: Series
+#       value_template: >-
+#         {%- if states.media_player.kodi.state == "playing" or "paused" and states.media_player.kodi.attributes.media_content_type == "tvshow" -%}
+#           {{ states.media_player.kodi.attributes.media_series_title }}
+#         {%- else -%}
+          
+#         {%- endif -%}
+#       icon_template: mdi:television-classic
+#     media_player_kodi_volume:
+#       friendly_name: Volume
+#       value_template: >-
+#         {%- if states.media_player.kodi.attributes.volume_level -%}
+#           {{ states.media_player.kodi.attributes.volume_level * 100}}
+#         {%- else -%}
+#           0
+#         {%- endif -%}
+#       unit_of_measurement: '%'
+#       icon_template: >-
+#         {%- if 66 < states.media_player.kodi.attributes.volume_level * 100 <= 100 -%}
+#           mdi:volume-high
+#         {%- elif 33 < states.media_player.kodi.attributes.volume_level * 100 <= 66 -%}
+#           mdi:volume-medium
+#         {%- elif 0 < states.media_player.kodi.attributes.volume_level * 100 <= 33 -%}
+#           mdi:volume-low
+#         {%- elif states.media_player.kodi.attributes.volume_level * 100 == 0 -%}
+#           mdi:volume-off
+#         {%- else -%}
+#           mdi:volume-mute
+#         {%- endif -%}

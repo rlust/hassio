@@ -1,0 +1,193 @@
+##############################################################################
+# The following devices are used by the demo automations, feel free to remove
+# these and/or replace with your own devices
+
+# Sensors for weather and media player information
+sensor:
+  - platform: yweather
+    name: Weather
+    monitored_conditions:
+      - weather_current
+      - temperature
+      - temp_min
+      - temp_max
+      - humidity
+  - platform: template
+    sensors:
+      media_player_title:
+        value_template: '{{ states.media_player.media_player.attributes.media_title }}'
+      media_player_artist:
+        value_template: '{{ states.media_player.media_player.attributes.media_artist }}'
+      media_player_volume:
+        value_template: '{{ states.media_player.media_player.attributes.volume_level }}'
+# - platform: octoprint
+  # name: OctoPrint
+  # monitored_conditions:
+    # - Current State
+    # - Temperatures
+    # - Job Percentage
+
+# octoprint:
+  # host: octoprint.local
+  # api_key: YOUROCTOPRINTAPIKEY
+
+media_player:
+  - platform: gpmdp
+    name: "Media Player"
+    host: 127.0.0.1
+
+alarm_control_panel:
+  - platform: manual
+    code: 1234
+
+light:
+  - platform: mqtt
+    name: "Light 1"
+    command_topic: "homeassistant/light/led2"
+    state_topic: "homeassistant/light/led2"
+    brightness_command_topic: "homeassistant/light/led2/bright"
+    brightness_state_topic: "homeassistant/light/led2/bright"
+  - platform: mqtt
+    name: "Light 2"
+    command_topic: "homeassistant/light/light2"
+    state_topic: "homeassistant/light/light2"
+    brightness_command_topic: "homeassistant/light/light2/bright"
+    brightness_state_topic: "homeassistant/light/light2/bright"
+  - platform: mqtt
+    name: "Light 3"
+    command_topic: "homeassistant/light/light3"
+    state_topic: "homeassistant/light/light3"
+    brightness_command_topic: "homeassistant/light/light3/bright"
+    brightness_state_topic: "homeassistant/light/light3/bright"
+
+##############################################################################
+# Create a group for the lights
+group:
+  light_toggle_group:
+    name: Light Toggle Group
+    view: no
+    entities:
+      - light.led2
+      - light.bruh_led6
+      - light.3162e3
+      - light.chair
+      - light.foyer
+      - light.led5
+      - switch.fireplace_basic_relay
+
+scene:
+- name: Lights On
+  entities:
+    light.led2:
+      state: on
+      brightness: 255
+    light.bruh_led6:
+      state: on
+      brightness: 255
+    light.3162e3:
+      state: on
+      brightness: 125
+    light.plate01_backlight:
+      state: on
+      brightness: 255
+    light.057d2a:
+      state: on
+      brightness: 125
+    light.06f23e:
+      state: on
+      brightness: 125
+    light.316993:
+      state: on
+      brightness: 125
+    light.3dfafe:
+      state: on
+      brightness: 125
+    light.chair:
+      state: on
+    light.foyer:
+      state: on
+    switch.fireplace_basic_relay:
+      state: on
+
+- name: Daylight
+  entities:
+    light.led2:
+      state: on
+      brightness: 100
+    light.bruh_led6:
+      state: on
+      brightness: 150
+    light.3162e3:
+      state: on
+      brightness: 150
+    light.plate01_backlight:
+      state: on
+      brightness: 150
+    switch.fireplace_basic_relay:
+      state: off
+    light.chair:
+      state: off
+    light.foyer:
+      state: Off
+    light.057d2a:
+      state: off
+    light.06f23e:
+      state: off
+    light.316993:
+      state: off
+    light.3dfafe:
+      state: off
+
+- name: Night
+  entities:
+    light.led2:
+      state: on
+      brightness: 255
+    light.bruh_led6:
+      state: on
+      brightness: 50
+    light.3162e3:
+      state: on
+      brightness: 50
+    light.plate01_backlight:
+      state: on
+      brightness: 50
+    light.chair:
+      state: on
+    light.foyer:
+      state: on
+    switch.fireplace_basic_relay:
+      state: on
+
+- name: Lights Off
+  entities:
+    light.led2:
+      state: off
+    light.bruh_led6:
+      state: off
+    light.3162e3:
+      state: off
+    light.plate01_backlight:
+      state: on
+      brightness: 50
+    light.057d2a:
+      state: off
+    light.06f23e:
+      state: off
+    light.316993:
+      state: off
+    light.3dfafe:
+      state: off
+    light.chair:
+      state: off
+    light.foyer:
+      state: off
+    light.deck:
+      state: off
+    switch.led5:
+      state: off
+    light.chandelier:
+      state: off
+    switch.fireplace_basic_relay:
+      state: off
+    

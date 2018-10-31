@@ -1,0 +1,55 @@
+esphomeyaml:
+  name: oled32
+  platform: ESP32
+  board: ttgo-lora32-v1
+  esphomelib_version: dev
+
+wifi:
+  ssid: 'Lust'
+  password: '00000000'
+
+mqtt:
+  broker: '192.168.1.50'
+ #port: XXXX
+  username: 'rc'
+  password: 'rc'
+
+logger:
+  level: VERY_VERBOSE
+  logs:
+    i2c: DEBUG
+    spi: DEBUG
+
+ota:
+
+i2c:
+  sda: GPIO4
+  scl: GPIO15
+  scan: true
+  frequency: 700khz
+
+font:
+  - file: 'Sansation-Regular.ttf'
+    id: my_font
+    size: 10
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    reset_pin: GPIO16
+    address: 0x3C
+    update_interval: 5s
+    lambda: |-
+      // Clear display (not sure if this is needed?)
+      it.fill(0);
+      // Current time, random location (like a screensaver)
+      it.strftime(rand()%(20), rand()%(51), id(my_font), "%Y-%m-%d %H:%M:%S", id(sntp_time).now());
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: 'EST+5EDT,M3.2.0/2,M11.1.0/2'
+    servers:
+      - 0.ca.pool.ntp.org
+      - 1.ca.pool.ntp.org
+      - 2.ca.pool.ntp.org

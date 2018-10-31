@@ -1,6 +1,6 @@
 homeassistant:
   packages: !include_dir_named packages
-  # v 1.5 10-24-18
+  # v 1.4
   # New fresh install hassos on 32 gb card Started 9/12/18
   # Name of the location where Home Assistant is running
   name: Hassio Pi New
@@ -23,7 +23,6 @@ introduction:
 
 # Enables the frontend
 frontend:
-  themes: !include_dir_merge_named themes/
 
 # Enables configuration UI
 config:
@@ -52,29 +51,19 @@ discovery:
 conversation:
 
 # Enables support for tracking state changes over time
-tuya:
-  username: rlust@mac.com
-  password: rc514131
-  country_code: 1
-  platform: smart_life
+
 
 # View all events in a logbook
 recorder:
 logbook:
 
-
-
 logger:
   default: critical
   logs:
-    insteonplm: debug
-    homeassistant.components.insteon: debug
-    homeassistant.components.light.insteon: debug
-    homeassistant.components.switch.insteon: debug
-    homeassistant.components.binary_sensor.insteon: debug
-    homeassistant.components.sensor.insteon: debug
-    homeassistant.components.fan.insteon: debug
-    homeassistant.components.cover.insteon: debug
+    homeassistant.components: info
+    homeassistant.components.rfxtrx: debug
+    homeassistant.components.device_tracker: critical
+    homeassistant.components.camera: critical
 history:
   include:
     domains:
@@ -114,28 +103,6 @@ cloud:
           description: The can lights in the kitchen
         switch.stairs:
           display_categories: LIGHT
-homekit:
-  filter:
-    include_domains:
-      - alarm_control_panel
-      - light
-      - media_player
-      - switch
-  entity_config:
-    alarm_control_panel.home:
-      code: 5878
-    light.kitchen_table:
-      name: Kitchen Table Light
-    lock.front_door:
-      code: 1234
-    media_player.viera_st60:
-      feature_list:
-        - feature: on_off
-        - feature: play_pause
-        - feature: play_stop
-        - feature: toggle_mute
-    switch.fireplace_basic_relay:
-      type: outlet
 
 ios:
 # Example configuration.yaml entry
@@ -144,7 +111,11 @@ geo_location:
     url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
     radius: 1250
     entity_namespace: 'usgs_earthquakes'
-
+tuya:
+  username: rlust@mac.com
+  password: rc514131
+  country_code: 1
+  platform: smart_life
 
 camera:
   - platform: canary
@@ -203,7 +174,7 @@ insteon:
   ip_port: 25105
   username: Incatasi
   password: 9UnEUCqL
-  #hub_version: 2
+  hub_version: 2
   # device_override:
   #    # Smoke Detector
   #    - address: 23.4F.4B
@@ -289,28 +260,17 @@ scene:
       light.3162e3: on
       light.20bc14: on
       light.3dfafe: on
-      light.led5:
-        state: on
-        rgb_color: [255,126,0]
-        brightness: 100
-      light.led6:
-        state: on
-        rgb_color: [255,126,10]
-        brightness: 100
-      light.led2:
+      light.bruh_led6:
         state: on
         rgb_color: [255,162,71]
+        #xy_color: [0.33, 0.66]
         brightness: 100
   - name: TV Time
     entities:
-      switch.fireplace_basic_relay: on
-      light.led2:
+      switch.fireplace_basic_relay: off
+      light.bruh_led6:
         state: on
-        rgb_color: [255,126,0]
-        brightness: 100
-      light.06f23e: 
-        state: on
-        brightness: 39
+        brightness: 90
       light.chair: on
       media_player.fr_tv: on
       media_player.viera_st60: on
@@ -326,9 +286,8 @@ scene:
       light.fan: on
       light.3162e3: off
       light.20bc14: off
-      
+      light.3dfafe: off
       light.3df6f3: off
-      light.06f23e: off
       light.led6: off
       light.led3: off
       light.led2: off
@@ -337,81 +296,35 @@ scene:
       light.led5: off 
       switch.chandelier: off
       light.02010565b4e62d523787: off
-      
-  - name: Romantic
-    entities:
-      light.foyer: on
-      light.3162e3:
-        state: on
-        brightness: 27 
-      light.led2:
-        state: on
-        rgb_color: [25,12,87]
-        brightness: 100
-      light.bruh_led6:
-        state: on
-        rgb_color: [250,162,71]
-        brightness: 100
-      light.led6:
-        state: on
-        rgb_color: [255,126,0]
-        brightness: 100
-      light.chair: off
-      light.fan: off
-      light.06f23e: off
-      light.20bc14: off
-      light.3dfafe: off
-      light.3df6f3: off
-      
-      light.led3: off
-      
-      
-      light.037577: off 
-      light.led5: off 
-  - name: TV Dark
-    entities: 
-      light.3162e3: off
-      light.20bc14: off
-      light.3dfafe: off
-      light.bruh_led6:
-        state: on
-        rgb_color: [255,126,0]
-        brightness: 100
-      light.led2:
-        state: on
-        rgb_color: [225,62,7]
-        brightness: 100
-      light.led6:
-        state: on
-        rgb_color: [25,162,7]
-        brightness: 100
-      light.chair: on
-      media_player.frreceiver:
-        source: Video 2  
 
+#scene:
+  # - name: Romantic
+  #   entities:
+  #     light.bruh_led6: on
+  #     light.bruh_led6:
+  #       state: on
+  #       rgb_color: [255,162,71]
+  #       brightness: 76
+  # - name: TV
+  #   entities:
+  #     light.chair:
+  #       state: on
+  #       brightness: 100
+  #     light.tvled: on
+  #     media_player.frreceiver:
+  #       source: Video 2  
+  
+  # - name: dimmer Led6
+  #   entities:
+  #     - scene.dim_light_25
+  #     - scene.dim_light_50
+  #     - scene.dim_light_75
+  #     - scene.dim_light_100
+  #   action:
+  #      domain: scene
+  #      service: turn_on
 # Example configuration.yaml entry using 'input_number' in an action in an automation
 input_select:
-  
-  hass_theme:
-    name: HASS Themes
-    options:
-      - default
-      - night
-      - wood
-      - PmxMonolight
-      - vintage
-      - dark_blue
-      - dark_theme
-      - teal_theme
-      - dark_cyan
-      - dark_red
-      - christmas
-      - solarized_light
-      - midnight
-      - teal
-    initial: default
-    icon: mdi:theme-light-dark
-
   scene_select:
     name: Scene Select
     options:
@@ -523,9 +436,7 @@ mqtt_statestream:
     domains:
       - switch
       - light
-      - sensor
-      - cover
-           
+      - sensor      
     entities:
       - sensor.theatre_humidity
       - sensor.theatre_temperature
@@ -589,8 +500,8 @@ cover:
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
-    state_open: "OFF"
-    state_closed: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
     optomistic: false
     retain: false
 
@@ -601,8 +512,8 @@ cover:
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
-    state_open: "OFF"
-    state_closed: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
     optomistic: false
     retain: false
 
