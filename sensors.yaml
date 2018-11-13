@@ -65,7 +65,7 @@
   state_topic: "tele/big/SENSOR"
   name: "State Big GD"
   value_template: "{{ value_json.Switch2 }}"
-
+# RF Sensors
 
 - platform: mqtt
   state_topic: "tele/fan/SENSOR"

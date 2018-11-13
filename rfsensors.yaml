@@ -19,11 +19,11 @@
 #   qos: 1
 #   retain: false
 - platform: mqtt
-  name: "Shop Door"
+  name: "Pantry Door"
   state_topic: "tele/RF_Bridge/RESULT"
   value_template: '{{value_json.RfReceived.Data}}'
-  payload_on: "F8030A"
-  payload_off: "F8030E"
+  payload_on: "D7130A"
+  payload_off: "D7130E"
   device_class: Door
   optimistic: false
   qos: 1

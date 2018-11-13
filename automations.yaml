@@ -724,3 +724,73 @@
     service: light.turn_on
   - data: {}
     service: script.alexa_notify_test
+- id: '1542078652598'
+  alias: Deck Door Open Turn on Lights LED5 Driveway
+  trigger:
+  - entity_id: binary_sensor.deck_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - after: sunset
+    before: sunrise
+    condition: sun
+  action:
+  - data:
+      entity_id: switch.led5
+    service: switch.turn_on
+  - data:
+      entity_id: light.1862ea
+    service: light.turn_on
+  - delay: 00:04:44
+  - data:
+      entity_id: light.1862ea
+    service: light.turn_off
+  - data:
+      entity_id: switch.led5
+    service: switch.turn_off
+- id: '1542085635962'
+  alias: Plate03 01 04 set brightness RC arrive
+  trigger:
+  - entity_id: device_tracker.google_maps_114193578345566022352
+    for: 00:01:20
+    from: away
+    platform: state
+    to: home
+  condition: []
+  action:
+  - alias: ''
+    data:
+      brightness: 220
+      entity_id: light.plate03_backlight
+    service: light.turn_on
+  - data:
+      brightness: 220
+      entity_id: light.plate01_backlight
+    service: light.turn_on
+  - data:
+      brightness: 220
+      entity_id: light.plate04_backlight
+    service: light.turn_on
+- id: '1542085990556'
+  alias: Plate 01 03 04 dim RC Leave
+  trigger:
+  - entity_id: device_tracker.google_maps_114193578345566022352
+    for: 00:02:22
+    from: home
+    platform: state
+    to: away
+  condition: []
+  action:
+  - data:
+      brightness: 30
+      entity_id: light.plate03_backlight
+    service: light.turn_on
+  - data:
+      brightness: 30
+      entity_id: light.plate01_backlight
+    service: light.turn_on
+  - data:
+      brightness: 30
+      entity_id: light.plate04_backlight
+    service: light.turn_on

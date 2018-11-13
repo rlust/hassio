@@ -1,6 +1,6 @@
 homeassistant:
   packages: !include_dir_named packages
-  # v 1.6 11-07-18
+  # v 1.7 12--18
   # New fresh install hassos on VVB Started 10/25/18
   # Name of the location where Home Assistant is running
   name: Hassio Virtual
@@ -37,7 +37,7 @@ config:
 # http:
 #   base_url: example.duckdns.org:8123
 #http:
-  #api_password: Rc514131!
+  #api_password: 
   #  base_url: !secret baseurl
   #  ssl_certificate: !secret sslcert
   #  ssl_key: !secret sslkey
@@ -371,6 +371,15 @@ scene:
       light.3162e3: on
       light.20bc14: on
       light.3dfafe: on
+      light.plate01_backlight:
+        state: on
+        brightness: 90
+      light.plate03_backlight:
+        state: on
+        brightness: 90
+      light.plate04_backlight:
+        state: on
+        brightness: 90
       light.led5:
         state: on
         rgb_color: [255,126,0]
@@ -393,6 +402,15 @@ scene:
       light.06f23e: 
         state: on
         brightness: 39
+      light.plate01_backlight:
+        state: on
+        brightness: 80
+      light.plate03_backlight:
+        state: on
+        brightness: 80
+      light.plate04_backlight:
+        state: on
+        brightness: 80
       light.chair: on
       media_player.fr_tv: on
       media_player.viera_st60: on
@@ -419,6 +437,16 @@ scene:
       light.led5: off 
       switch.chandelier: off
       light.02010565b4e62d523787: off
+      light.plate01_backlight:
+        state: on
+        brightness: 20
+      light.plate03_backlight:
+        state: on
+        brightness: 20
+      light.plate04_backlight:
+        state: on
+        brightness: 20
+
       
   - name: Romantic
     entities:
@@ -450,11 +478,39 @@ scene:
       
       light.037577: off 
       light.led5: off 
+  - name: Daytime
+    entities:
+      light.chair: off
+      light.fan: off
+      light.06f23e: off
+      light.20bc14: off
+      light.3dfafe: off
+      light.3df6f3: off
+      
+      light.led3: off
+      light.plate01_backlight:
+        state: on
+        brightness: 200
+      light.plate03_backlight:
+        state: on
+        brightness: 200
+      light.plate04_backlight:
+        state: on
+        brightness: 200
   - name: TV Dark
     entities: 
       light.3162e3: off
       light.20bc14: off
       light.3dfafe: off
+      light.plate01_backlight:
+        state: on
+        brightness: 60
+      light.plate03_backlight:
+        state: on
+        brightness: 60
+      light.plate04_backlight:
+        state: on
+        brightness: 60
       light.bruh_led6:
         state: on
         rgb_color: [255,126,0]
@@ -754,4 +810,25 @@ media_player:
     #port: 6600
     name: Pi Speaker
  # Example configuration.yaml platform entry
-
+binary_sensor:
+#RF Switches
+  - platform: mqtt
+    name: "Pantry Door"
+    state_topic: "tele/rfbridge/RESULT"
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: "D7130A"
+    payload_off: "D7130E"
+    device_class: Door
+    optimistic: false
+    qos: 1
+    retain: false
+  - platform: mqtt
+    name: "Deck Door"
+    state_topic: "tele/rfbridge/RESULT"
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: "774B0A"
+    payload_off: "774B0E"
+    device_class: Door
+    optimistic: false
+    qos: 1
+    retain: false
