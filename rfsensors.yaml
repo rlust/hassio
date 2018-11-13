@@ -1,0 +1,56 @@
+# - platform: mqtt
+#   state_topic: "tele/RF_Bridge/RESULT"
+#   name: 'Garage Motion'
+#   value_template: '{{value_json.RfReceived.Data}}'
+#   payload_on: 'D54C1E'
+#   payload_off: 'D54C1Eoff'
+#   device_class: motion
+#   optimistic: false
+#   qos: 1
+#   retain: false
+# - platform: mqtt
+#   name: "Garage Fridge"
+#   state_topic: "tele/RF_Bridge/RESULT"
+#   value_template: '{{value_json.RfReceived.Data}}'
+#   payload_on: "DF000A"
+#   payload_off: "DF000E"
+#   device_class: Cold
+#   optimistic: false
+#   qos: 1
+#   retain: false
+- platform: mqtt
+  name: "Shop Door"
+  state_topic: "tele/RF_Bridge/RESULT"
+  value_template: '{{value_json.RfReceived.Data}}'
+  payload_on: "F8030A"
+  payload_off: "F8030E"
+  device_class: Door
+  optimistic: false
+  qos: 1
+  retain: false
+- platform: mqtt
+  name: "Basment Water"
+  state_topic: "tele/RF_Bridge/RESULT"
+  value_template: '{{value_json.RfReceived.Data}}'
+  payload_on: "84B90E"
+  device_class: Moisture
+  optimistic: false
+  qos: 1
+  retain: false
+
+- platform: mqtt
+  name: "Office Wand"
+  state_topic: "tele/RF_Bridge/RESULT"
+  value_template: '{{value_json.RfReceived.Data}}'
+  payload_on: "D31421"
+  payload_off: "D31421off"
+  qos: 1
+  retain: false
+- platform: mqtt
+  name: "Office Book"
+  state_topic: "tele/RF_Bridge/RESULT"
+  value_template: '{{value_json.RfReceived.Data}}'
+  payload_on: "C7C2A1"
+  payload_off: "C7C2A19off"
+  qos: 1
+  retain: false

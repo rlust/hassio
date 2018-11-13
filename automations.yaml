@@ -1,18 +1,68 @@
-
-- alias: "Power state on HA start-up"
+- alias: Turn on kitchen light when there is movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.x10a02
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: light.3dfafe
+  id: 5680ded7cbb546eb80774df2216fadee
+- alias: Turn off kitchen light 15 minutes after last movement
+  trigger:
+    platform: state
+    entity_id: sensor.motion_sensor
+    to: 'off'
+    for:
+      minutes: 15
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.3dfafe
+  id: 8f07d77110174098893b9aa52fcb4652
+- alias: Alexa TTS
+  trigger:
+    platform: state
+    entity_id: input_select.alexa
+  action:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: "{% if is_state('input_select.alexa', 'Living Room') %}\n  media_player.living_room\n\
+        {% elif is_state('input_select.alexa', 'Master Bedroom') %}\n  media_player.master_bedroom\n\
+        {% elif is_state('input_select.alexa', 'Kitchen') %}\n  media_player.kitchen\n\
+        {% elif is_state('input_select.alexa', 'Game Room') %}\n  media_player.game_room\n\
+        {% elif is_state('input_select.alexa', 'Nursery') %}\n  media_player.nursery\n\
+        {% elif is_state('input_select.alexa', 'Office') %}\n  media_player.office\n\
+        {% elif is_state('input_select.alexa', 'None') %}\n  false\n{% endif %}\n"
+      volume_level: '{{ states.input_number.alexa_volume.state | float /10 }}'
+  - service: media_player.alexa_tts
+    data_template:
+      entity_id: "{% if is_state('input_select.alexa', 'Living Room') %}\n  media_player.living_room\n\
+        {% elif is_state('input_select.alexa', 'Master Bedroom') %}\n  media_player.master_bedroom\n\
+        {% elif is_state('input_select.alexa', 'Kitchen') %}\n  media_player.kitchen\n\
+        {% elif is_state('input_select.alexa', 'Game Room') %}\n  media_player.game_room\n\
+        {% elif is_state('input_select.alexa', 'Nursery') %}\n  media_player.nursery\n\
+        {% elif is_state('input_select.alexa', 'Office') %}\n  media_player.office\n\
+        {% elif is_state('input_select.alexa', 'None') %}\n  false\n{% endif %}\n"
+      message: '{{  states.input_text.alexa_tts.state }}'
+  - delay: 00:00:02
+  - service: input_select.select_option
+    data:
+      entity_id: input_select.alexa
+      option: None
+  id: 54ba4bcba441461490802af3ab410694
+- alias: Power state on HA start-up
   trigger:
     platform: homeassistant
     event: start
   action:
-    - service: mqtt.publish
-      data:
-        topic: "cmnd/sonoffs/SetOption19"
-        payload: "1"
-    - service: mqtt.publish
-      data:
-        topic: "cmnd/sonoffs/state"
-        payload: "" 
-
+  - service: mqtt.publish
+    data:
+      topic: cmnd/sonoffs/SetOption19
+      payload: '1'
+  - service: mqtt.publish
+    data:
+      topic: cmnd/sonoffs/state
+      payload: ''
+  id: 559ec3c7234341d6b8ef4a4e13638da5
 - alias: Garage State Notification
   trigger:
     platform: state
@@ -25,30 +75,36 @@
       mplayer: family_room_2
   id: 6310daf6cb5d43769eef6cdb60decc64
 - id: '1530804968789'
-  alias: Kim Leave Work
+  alias: Kim Arrive Work
   trigger:
-  - entity_id: device_tracker.kimiphone
-    from: Kim Work
+  - entity_id: device_tracker.google_maps_106953152375077209383
+    from: not_home
     platform: state
-    to: away
+    to: Kim Work
   condition: []
   action:
   - data:
-      message: ' Kim Left Work'
+      message: ' Kim Arrived at Work'
     service: persistent_notification.create
   - data:
-      message: Hello,  Kim left work!
+      message: Hello,  Kim arrived work!
     service: notify.notify
   - data:
       data:
         url: https://google.com
-      message: Kim left work
+      message: Kim arrived work
       title: Location Change
     service: notify.ios___iphone_randy_
   - data:
       entity_id: media_player.mpd
-      message: Hello Kim left work!
+      message: Hello Kim arrived work!
     service: tts.google_say
+  - data: {}
+    service: script.alexa_kim_arrive_w
+  - data:
+      message: Kim got to work!
+      title: Kim on the job
+    service: persistent_notification.create
 - id: '1530844707823'
   alias: FR Motion
   trigger:
@@ -62,30 +118,11 @@
     state: below_horizon
   action:
   - data:
-      entity_id: switch.chair_2
-    service: switch.turn_on
-  - delay: '"00:15:00"'
-  - data:
-      entity_id: switch.chair_2
-    service: switch.turn_off
-- id: '1531368607253'
-  alias: Garage door Open turn on Light when dark
-  trigger:
-  - entity_id: binary_sensor.garage_door_d5_
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - after: sunset
-    before: sunrise
-    condition: sun
-  action:
-  - data:
-      entity: light.1862ea
+      entity_id: light.chair
     service: light.turn_on
-  - delay: 00:10:00
+  - delay: 00:03:02
   - data:
-      entity: light.1862ea
+      entity_id: light.chair
     service: light.turn_off
 - id: '1531494095111'
   alias: Garage Small Open BMW Switch
@@ -114,7 +151,7 @@
   alias: Porsche Voltabe Low
   trigger:
   - above: '11'
-    below: '12'
+    below: '11.8'
     entity_id: sensor.porsche_easy_batt_volt
     platform: numeric_state
   condition: []
@@ -151,6 +188,12 @@
     service: notify.ios___iphone_randy_
   - data:
       message: Hello, this is Alexa, The side garage door is open!
+    service: script.alexa_side_door
+  - data:
+      data:
+        url: http://192.168.1.110:8176/controlpage?name=!!!!A!%20KIm%20control%20page
+      message: The side garage door is open!
+      title: Side garage door
     service: notify.notify
 - id: '1533393828499'
   alias: Alexa FR Say weather Updated
@@ -177,7 +220,7 @@
 - id: '1533690009484'
   alias: Water is Hot notify Alexa
   trigger:
-  - above: '89'
+  - above: '94'
     below: '99'
     entity_id: sensor.hot_water_pipe
     platform: numeric_state
@@ -196,9 +239,19 @@
     minutes: /15
     platform: time
     seconds: 30
+  - entity_id: automation.randy_arrived_home
+    from: away
+    platform: state
+    to: home
+  - event: sunset
+    platform: sun
+  - entity_id: alarm_control_panel.home
+    from: disarmed
+    platform: state
+    to: armed_home
   condition: []
   action:
-  - service: script.audio_notify
+  - service: script.audio_notify_weeather
 - id: '1534219339871'
   alias: Weather report by Alexa
   trigger:
@@ -217,3 +270,457 @@
   condition: []
   action:
   - service: script.alexa_notify_test
+- id: '1535765078293'
+  alias: Lights FR at Sundown
+  trigger:
+  - event: sunset
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: device_tracker.iphonerc
+    state: home
+  action:
+  - data:
+      entity_id: light.chair
+    service: light.turn_on
+  - data:
+      entity_id: switch.fireplace_basic_relay
+    service: light.turn_on
+- id: '1536888146095'
+  alias: Garage Light beep
+  trigger:
+  - entity_id: light.1862ce
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: script.alexa_beep
+- alias: Office Light Brightness
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: input_number.office_light_brightness
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.316993
+      brightness_pct: '{{ states.input_number.office_light_brightness.state }}'
+  id: a15625ce95364eebbc9a3878b9d6bcea
+- alias: Office Slider Get
+  trigger:
+    platform: state
+    entity_id: light.316993
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.office_light_brightness
+      value: '{{ states.sensor.light_office_2_brightness.state }}'
+  id: 117dd8f7793a4713b3aa5fd70633743c
+- alias: turn something off after x time after turning it on
+  trigger:
+    platform: state
+    entity_id: switch.something
+    to: 'on'
+  action:
+  - delay: 00:{{ states.input_number.minutes.state | int }}:{{ states.input_number.seconds.state
+      | int }}
+  - service: switch.turn_off
+    entity_id: light.316993
+  id: 964c5fdeaf14429fba772b39f66440d5
+- alias: Set temp slider
+  trigger:
+    platform: mqtt
+    topic: setTemperature
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.target_temp
+      value: '{{ trigger.payload }}'
+  id: 43832f7b4afc46e6a6174bb3d7264e3f
+- alias: Temp slider moved
+  trigger:
+    platform: state
+    entity_id: input_number.target_temp
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: setTemperature
+      retain: true
+      payload: '{{ states(''input_number.target_temp'') | int }}'
+  id: 2e3b57a1592f4b24a83d77cc941a96ad
+- id: ab118a259fc84c34b8a42d1c253a0f65
+  alias: Office Light - Custom
+  trigger:
+  - entity_id: input_select.scene_office
+    platform: state
+    to: CUSTOM
+  action:
+  - data:
+      entity_id: light.316993
+    data_template:
+      brightness: '{{ states(''input_number.office_brightness'') | int }}'
+      entity_id: light.316993
+    service: light.turn_on
+- id: '1537322992199'
+  alias: Randy Arrived Home
+  trigger:
+  - entity_id: device_tracker.google_maps_114193578345566022352
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      payload: 'on'
+      topic: state/randy/home
+    service: mqtt.publish
+  - alias: ''
+    data:
+      entity_id: input_boolean.notify_home_rc
+    service: input_boolean.turn_on
+  - service: alarm_control_panel.alarm_disarm
+  - alias: ''
+    data: {}
+    service: script.alexa_rc_arrive
+  - data:
+      message: ' Randy is home'
+    service: notify.notify
+  - data:
+      message: ' Randy is home'
+      topic: RC arrived home
+    service: notify.ios___iphone_randy_
+- id: '1537323756908'
+  alias: Kim Leave Work
+  trigger:
+  - entity_id: device_tracker.google_maps_106953152375077209383
+    from: Kim Work
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - service: script.alexa_kim_leave_w
+  - data: {}
+    service: script.alexa_notify
+  - data:
+      message: Kim left work!
+      title: Kim on the move
+    service: persistent_notification.create
+- id: '1538015464750'
+  alias: Night Shutdown
+  trigger:
+  - at: '23:36:33'
+    platform: time
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: light.tvled
+    service: light.turn_off
+- id: '1538150289235'
+  alias: Shed door open
+  trigger:
+  - entity_id: binary_sensor.shed_door_
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - service: script.alexa_shed_door
+  - data:
+      data:
+        url: https://google.com
+      message: The shed door is open
+      title: Shed door
+    service: notify.pushbullet
+  - data:
+      data:
+        url: http://192.168.1.110:8176/controlpage?name=!!!!A!%20KIm%20control%20page
+      message: The shed door is open
+      title: Shed door
+    service: notify.notify
+- id: '1538711525521'
+  alias: Front Door Open Dark Trn on Foyer
+  trigger:
+  - entity_id: binary_sensor.front_door_d3_
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - after: sunset
+    before: sunrise
+    condition: sun
+  action:
+  - data:
+      entity_id: light.foyer
+    service: light.turn_on
+- id: '1539036188698'
+  alias: Kim Arrive Home
+  trigger:
+  - entity_id: device_tracker.google_maps_106953152375077209383
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - service: script.alexa_kim_arrive
+  - data:
+      entity_id: input_boolean.notify_home_kim
+    service: input_boolean.turn_on
+- id: '1539142948536'
+  alias: Paper White GD Update open to close my/custom/on
+  trigger:
+  - entity_id: cover.big_gd
+    from: open
+    platform: state
+    to: closed
+  condition: []
+  action:
+  - alias: ''
+    data:
+      topic: my/custom/on
+    service: mqtt.publish
+- id: '1539143099217'
+  alias: Paper White GD Update my/custom/off
+  trigger:
+  - entity_id: cover.big_gd
+    from: closed
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data:
+      topic: my/custom/off
+    service: mqtt.publish
+- id: '1539198101471'
+  alias: Paper Display Small GD gd/small/on
+  trigger:
+  - entity_id: cover.small_gd
+    from: open
+    platform: state
+    to: closed
+  condition: []
+  action:
+  - data:
+      topic: gd/small/on
+    service: mqtt.publish
+- id: '1539198313074'
+  alias: Paper Display GD Small gd/small/off
+  trigger:
+  - entity_id: cover.small_gd
+    from: closed
+    platform: state
+    to: open
+  condition: []
+  action:
+  - data:
+      topic: gd/small/off
+    service: mqtt.publish
+- alias: Turn on MASTER light when there is movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.multisensor_motion
+    to: 'on'
+  condition:
+  - above: '145'
+    below: '205'
+    condition: numeric_state
+    entity_id: sensor.multisensor_brightness_2
+  action:
+  - data:
+      brightness: 65
+      entity_id: light.02010565b4e62d523787
+    service: homeassistant.turn_on
+  id: 9f6f3be487ee4ffa80c5d0de8fed71f9
+- alias: Turn off MASTER light 10 minutes after last movement
+  trigger:
+    platform: state
+    entity_id: binary_sensor.multisensor_motion
+    to: 'off'
+    for:
+      minutes: 8
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.02010565b4e62d523787
+  id: 33a569b3dd4f4466bfe16254463d6b46
+- id: '1539707487615'
+  alias: BRUH Motion Turn on Master Cans
+  trigger:
+  - entity_id: binary_sensor.multisensor_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - above: '145'
+    below: '205'
+    condition: numeric_state
+    entity_id: sensor.multisensor_brightness_2
+  action:
+  - data:
+      brightness: 205
+      entity_id: light.bruh_led
+      rgb_color:
+      - 25
+      - 0
+      - 180
+    service: light.turn_on
+  - delay: 00:00:06
+  - data:
+      brightness: 180
+      entity_id: light.bruh_led
+      rgb_color:
+      - 25
+      - 245
+      - 0
+    service: light.turn_on
+- id: '1539713537908'
+  alias: Randy Leave Home
+  trigger:
+  - entity_id: device_tracker.google_maps_114193578345566022352
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.notify_home_rc
+    service: input_boolean.turn_off
+  - data: {}
+    service: script.alexa_leave_randy_home
+- id: '1539713841716'
+  alias: Kim Leave Home
+  trigger:
+  - entity_id: device_tracker.google_maps_106953152375077209383
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.notify_home_kim
+    service: input_boolean.turn_off
+  - data: {}
+    service: script.alexa_kim_leave_home
+- id: '1539719289623'
+  alias: TVLED On Red
+  trigger:
+  - entity_id: automation.office_slider_get
+    from: '0'
+    platform: state
+    to: '50'
+  condition: []
+  action:
+  - data:
+      brightness: 255
+      entity_id: switch.led6
+      rgb_color:
+      - 255
+      - 0
+      - 2
+    service: light.turn_on
+- id: '1539745981803'
+  alias: Scene Select Romantic
+  trigger:
+  - entity_id: input_select.scene_bedroom
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: scene.romantic
+    service: scene.turn_on
+- id: '1539746729946'
+  alias: Scene Select Movies
+  trigger:
+  - entity_id: input_select.scene_bedroom
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: scene_movies
+    service: scene.turn_on
+- id: '1540473296713'
+  alias: Publish GD State MQTT
+  trigger:
+  - at: 00:11
+    platform: time
+  condition: []
+  action:
+  - data:
+      payload_template: '{{ states(''cover.big_gd'') }}'
+      topic: homeassistant/cover/big_gd/state
+    service: mqtt.publish
+  - data:
+      payload_template: '{{ states(''cover.small_gd'') }}'
+      topic: homeassistant/cover/small_gd/state
+    service: mqtt.publish
+- id: '1540473305644'
+  alias: Publish GD State MQTT
+  trigger:
+  - at: 01:11
+    platform: time
+  condition: []
+  action:
+  - data:
+      payload_template: '{{ states(''cover.big_gd'') }}'
+      topic: homeassistant/cover/big_gd/state
+    service: mqtt.publish
+  - data:
+      payload_template: '{{ states(''cover.small_gd'') }}'
+      topic: homeassistant/cover/small_gd/state
+    service: mqtt.publish
+- id: hass_theme
+  alias: hass_theme
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.hass_theme
+  action:
+  - service: frontend.set_theme
+    data_template:
+      name: '{{ states.input_select.hass_theme.state }}'
+- id: '1541121348667'
+  alias: Set TV Scene at Dusk if TV ON
+  trigger:
+  - event: sunset
+    offset: -00:40:00
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: media_player.fr_tv
+    state: 'on'
+  action:
+  - data:
+      entity_id: scene.tv_time
+    service: scene.turn_on
+- id: '1541700548795'
+  alias: Basement Shop High Humidity
+  trigger:
+  - above: '75'
+    below: '10'
+    entity_id: sensor.shop_humidity
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'Hello Alert, The basement is wet! '
+    service: notify.notify
+- id: '1541884937248'
+  alias: Loft Warm Turn on Fan
+  trigger:
+  - above: '75'
+    entity_id: sensor.master_temperature
+    platform: numeric_state
+  condition:
+  - below: '50'
+    condition: numeric_state
+    entity_id: sensor.dark_sky_apparent_temperature
+  action:
+  - data:
+      entity_id: light.3df6f3
+    service: light.turn_on
+  - data: {}
+    service: script.alexa_notify_test

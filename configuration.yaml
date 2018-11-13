@@ -1,17 +1,17 @@
-# Git repository for HASSIO config file  
-# v1.0
-
 homeassistant:
+  packages: !include_dir_named packages
+  # v 1.6 11-07-18
+  # New fresh install hassos on VVB Started 10/25/18
   # Name of the location where Home Assistant is running
-  name: Home HASSIO Pi
-  # Location required to calculate the time the sun rises and sets
-       
-  latitude: 40.0672
-  longitude: -82.4702
+  name: Hassio Virtual
 
+  # Location required to calculate the time the sun rises and sets
+  latitude: 40.0673
+  longitude: -82.471
   # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 0
+  elevation: 300
   # metric for Metric, imperial for Imperial
+  
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/New_York
@@ -19,104 +19,28 @@ homeassistant:
   customize: !include customize.yaml
 
 # Show links to resources in log and frontend
-introduction:
 hassio:
-# Enables the frontend  test
-recorder:
-logbook:
-# Enables support for tracking state changes over time
-history:
-  include:
-    domains:
-      - sensor
-      - switch
-      - media_player
+#introduction:
+ffmpeg:
+custom_updater:
+  card_urls:
+    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/kuuji/button-card/master/tracker.json
+# Enables the frontend
 frontend:
-  javascript_version: latest
-
-
-
-binary_sensor:
-    - platform: mqtt
-      state_topic: "tele/rfbridge/RESULT"
-      name: 'Pantry Door'
-      value_template: '{{value_json.RfReceived.Data}}'
-      payload_off: 'D7130E'
-      payload_on: 'D7130A'
-      device_class: door
-      optimistic: false
-      qos: 1
-      retain: false
-# E1E20A
-    - platform: mqtt
-      state_topic: "tele/rfbridge/RESULT"
-      name: 'Garage Door'
-      value_template: '{{value_json.RfReceived.Data}}'
-      payload_off: 'E1E20E'
-      payload_on: 'E1E20A'
-      device_class: door
-      optimistic: false
-      qos: 1
-      retain: false
-
-
-zeroconf:
-#wemo:
-#  static:
-#    - 192.168.1.202
-#    - 192.168.1.120
-#    - 192.168.1.200
-#    - 192.168.1.205
-#    - 192.168.1.204
-#influxdb:
-ios:
-http:
-  api_password: rc
-  #base_url: http://hassio.local:8123
-  #cors_allowed_origins:
-  #  - https://reformedreality.com
-  #  - http://reformedreality.com
-  #  
-  #  - http://192.168.1.176:7080
-  #  - https://hassio.local:7080
+  themes: !include_dir_merge_named themes/
 
 # Enables configuration UI
 config:
-panel_iframe:
-  configurator:
-    title: Configurator
-    icon: mdi:wrench
-    url: http://hassio.local:3218
-  plex:
-    title: Plex
-    icon: mdi:television
-    url: http://192.168.1.164:32400/web
-  indigo:
-    title: Indigo
-    url: http://192.168.1.110:8176
-  music: 
-    title: Music
-    icon: mdi:music
-    url: http://192.168.1.227:8080/addons/webinterface.arch/#/musics/artists/all
-  
-nest:
-  client_id: 42707d37-d11a-4aac-891e-4bbcfe9d1ee5
-  client_secret: F1rrB6qG4TvGecApE6b8Mb307
 
-
-# device_tracker:
-#   - platform: icloud2
-#     username: rlust@mac.com
-#     password: Lusty911
-#     account_name: icloud RCLust
-#     filter_devices: 'phone'
-
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
 #http:
-  # Secrets are defined in the file secrets.yaml
-  # api_password: !secret http_password
-  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  # base_url: example.duckdns.org:8123
-
+  #api_password: Rc514131!
+  #  base_url: !secret baseurl
+  #  ssl_certificate: !secret sslcert
+  #  ssl_key: !secret sslkey
 # Checks for available updates
 # Note: This component will send some information about your system to
 # the developers to assist with development of Home Assistant.
@@ -128,19 +52,85 @@ updater:
 
 # Discover some devices automatically
 discovery:
-  enable:
-    - homekit
+
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
+# Enables support for tracking state changes over time
+tuya:
+  username: rlust@mac.com
+  password: !secret tuya_password
+  country_code: 1
+  platform: smart_life
+
+# View all events in a logbook
+recorder:
+  purge_keep_days: 5
+  purge_interval: 1
+  #db_url: sqlite:////home/user/.homeassistant/test
+  exclude:
+    domains:
+      #- automation
+      - weblink
+      - updater
+    entities:
+      - sun.sun # Don't record sun data
+      - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+      - sensor.date
+logbook:
 
 
+
+logger:
+  default: critical
+  logs:
+    insteonplm: debug
+    homeassistant.components.insteon: debug
+    homeassistant.components.light.insteon: debug
+    homeassistant.components.switch.insteon: debug
+    homeassistant.components.binary_sensor.insteon: debug
+    homeassistant.components.sensor.insteon: debug
+    homeassistant.components.fan.insteon: debug
+    homeassistant.components.cover.insteon: debug
+history:
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
 # Enables a map showing the location of tracked devices
 map:
 
 # Track the sun
 sun:
 
+# Weather prediction
+# sensor:
+#   - platform: yr
+
+# Text to speech
+weather:
+  - platform: darksky
+    api_key: 9687683ab89181d52cb96254af23ca08
+
+# Cloud
+cloud:
+  alexa:
+      filter:
+        include_entities:
+          - light.3dfafe
+          - light.3162e3
+        include_domains:
+          - switch
+          - light
+        exclude_entities:
+          - switch.outside
+      entity_config:
+        light.3dfafe:
+          name: Kitchen Cans
+          description: The can lights in the kitchen
+        switch.stairs:
+          display_categories: LIGHT
 homekit:
   filter:
     include_domains:
@@ -148,75 +138,29 @@ homekit:
       - light
       - media_player
       - switch
-      - sensor
-      
   entity_config:
     alarm_control_panel.home:
-      code: 1234
+      code: 5878
     light.kitchen_table:
       name: Kitchen Table Light
-    #lock.front_door:
-    #  code: 1234
-    media_player.family_room:
+    lock.front_door:
+      code: 1234
+    media_player.viera_st60:
       feature_list:
         - feature: on_off
         - feature: play_pause
         - feature: play_stop
         - feature: toggle_mute
-    switch.chair:
+    switch.fireplace_basic_relay:
       type: outlet
 
-
-# Weather prediction
-weather:
-  - platform: openweathermap
-    api_key: 43a5eed614d1bb6a5fc02bfc4bc90b6b
-
-# Text to speech
-tts:
-  - platform: google
-  
-  - platform: marytts
-    host: 'localhost'
-    port: 59125
-    codec: 'wav'
-    voice: 'cmu-slt-hsmm'
-    language: 'en-US'
-
-# Cloud
-cloud:
-remote: !include remote.yaml
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-sensor: !include sensors.yaml
-light: !include lights.yaml
-##!weather: !include weather.yaml
-
-mqtt:
-  broker: 192.168.1.50
-  port: 1883
-  client_id: home-assistant-1
-  keepalive: 60
-  username: rc
-  password: rc
-  protocol: 3.1
-  birth_message:
-    topic: "tele/hass1/LWT"
-    payload: "Online"
-    qos: 1
-    retain: false
-  will_message:
-    topic: "tele/hass1/LWT"
-    payload: "Offline"
-    qos: 1
-    retain: false
-  discovery: true
-  discovery_prefix: homeassistant
-
-canary:
-  username: rlust@mac.com
-  password: rc514131
+ios:
+# Example configuration.yaml entry
+geo_location:
+  - platform: geo_json_events
+    url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson
+    radius: 1250
+    entity_namespace: 'usgs_earthquakes'
 
 
 camera:
@@ -225,7 +169,12 @@ camera:
   #- platform: generic
   #  name: "Newark Radar"
   #  still_image_url: https://www.wunderground.com/wundermap?lat=40.068348&lon=-82.461967&zoom=8&pin=&rad=1&rad.type=00Q&wxsn=0&svr=0&cams=0&sat=0&riv=0&mm=0&hur=0
-    
+
+  # - platform: foscam
+  #   ip: 192.168.1.102
+  #   username: rc
+  #   password: rc  
+  #   name: Garage
     
   - platform: mjpeg
     mjpeg_url: http://192.168.1.110:8000/++video?cameraNum=1&quality=100&req_fps=8
@@ -256,31 +205,541 @@ camera:
     name: Front
 
 
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+remote: !include remote.yaml
+#rfsensor: !include rfsensors.yaml
+#secret: !include secrets.yaml
 
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://hassio.local:3218
+insteon:
+  host: 192.168.1.111
+  ip_port: 25105
+  username: Incatasi
+  password: !secret insteon_password
+  x10_devices:
+     - housecode: a
+       unitcode: 2
+       platform: binary_sensor
+       #steps: STEPS
+     - housecode: b
+       unitcode: 4
+       platform: binary_sensor
+       #steps: STEPS
+     - housecode: b
+       unitcode: 6
+       platform: light
+       #steps: 12
+     - housecode: b
+       unitcode: 7
+       platform: light
+       #steps: 12
+     - housecode: b
+       unitcode: 8
+       platform: light
+       #steps: 12
+     - housecode: b
+       unitcode: 9
+       platform: light
+       #steps: 12
+     - housecode: b
+       unitcode: 10
+       platform: light
+     - housecode: b
+       unitcode: 12
+       platform: binary_sensor
+     - housecode: b
+       unitcode: 15
+       platform: binary_sensor
+       #steps: 12    
+     - housecode: c
+       unitcode: 7
+       platform: switch
+     - housecode: c
+       unitcode: 8
+       platform: switch
+     - housecode: c
+       unitcode: 9
+       platform: binary_sensor
+     - housecode: c
+       unitcode: 10
+       platform: binary_sensor
+     - housecode: c
+       unitcode: 11
+       platform: binary_sensor
+     - housecode: c
+       unitcode: 13
+       platform: binary_sensor
+     - housecode: c
+       unitcode: 14
+       platform: binary_sensor
+     - housecode: c
+       unitcode: 16
+       platform: switch
+  x10_all_units_off: b
+  x10_all_lights_on: b
+  x10_all_lights_off: b
+  #hub_version: 2
+  # device_override:
+  #    # Smoke Detector
+  #    - address: 23.4F.4B
+  #      cat:  0x10
+  #      subcat: 0x0A
+  #      firmware: 43
+       #product_key: PRODUCT_KEY MD Mast 31.F3.7D
+    #  - address: 31.F3.7D
+    #    cat:  0x10
+    #    subcat: 0x0A
+    #    firmware: 41  
+    #  - address: 31.AB.79
+    #    cat:  0x10
+    #    subcat: 0x0A
+    #    firmware: 41  
+device_sun_light_trigger:
+  light_group: group.night
+  light_profile: relax
+  device_group: group.trackdevs
+  #disable_turn_off: 1
+proximity:
+  home:
+    # ignored_zones:
+    #   - twork
+    #   - elschool
+    devices:
+      - device_tracker.google_maps_106953152375077209383
+      - device_tracker.google_maps_114193578345566022352
+    tolerance: 30
+    unit_of_measurement: mi
+  
+  # alex_home:
+  #   devices:
+  #     #- device_tracker.google_maps_106953152375077209383
+  #     - device_tracker.google_maps_114193578345566022352
+    
+  #   tolerance: 10
+  #   unit_of_measurement: mi
+  
+  # columbus:
+  #   devices:
+  #     - device_tracker.google_maps_106953152375077209383
+  #     - device_tracker.google_maps_114193578345566022352
+      
+  #   tolerance: 10
+  #   unit_of_measurement: mi
+  kim_work:
+    devices:
+      - device_tracker.google_maps_106953152375077209383
+    tolerance: 30
+    unit_of_measurement: mi
+
+input_boolean:
+  notify_home_rc:
+    name: Home Randy
+    initial: off
+    icon: mdi:car
+  notify_home_kim:
+    name: Home Kim
+    initial: off
+    icon: mdi:car
+  notify_home_empty:
+    name: Home Empty
+    initial: off
+    icon: mdi:car
+  alarm_off:
+    name: Alarm Armed Away
+    initial: off
+    icon: mdi:alarm
+  alarm_night:
+    name: Alarm Armed Night
+    initial: off
+    icon: mdi:alarm
+  alarm_triggered:
+    name: Alarm Triggered
+    initial: off
+    icon: mdi:alarm
+
+scene:
+  - name: Cooking
+    entities:
+      switch.fireplace_basic_relay: on
+      light.3162e3: on
+      light.20bc14: on
+      light.3dfafe: on
+      light.led5:
+        state: on
+        rgb_color: [255,126,0]
+        brightness: 100
+      light.led6:
+        state: on
+        rgb_color: [255,126,10]
+        brightness: 100
+      light.led2:
+        state: on
+        rgb_color: [255,162,71]
+        brightness: 100
+  - name: TV Time
+    entities:
+      switch.fireplace_basic_relay: on
+      light.led2:
+        state: on
+        rgb_color: [255,126,0]
+        brightness: 100
+      light.06f23e: 
+        state: on
+        brightness: 39
+      light.chair: on
+      media_player.fr_tv: on
+      media_player.viera_st60: on
+      media_player.frreceiver:
+        source: Video 2
+        state: on
+  - name: Bedtime
+    entities:
+      switch.fireplace_basic_relay: off
+      light.bruh_led6: off
+      media_player.fr_tv: off 
+      light.chair: off
+      light.fan: on
+      light.3162e3: off
+      light.20bc14: off
+      
+      light.3df6f3: off
+      light.06f23e: off
+      light.led6: off
+      light.led3: off
+      light.led2: off
+      light.foyer: off
+      light.037577: off 
+      light.led5: off 
+      switch.chandelier: off
+      light.02010565b4e62d523787: off
+      
+  - name: Romantic
+    entities:
+      light.foyer: on
+      light.3162e3:
+        state: on
+        brightness: 27 
+      light.led2:
+        state: on
+        rgb_color: [25,12,87]
+        brightness: 100
+      light.bruh_led6:
+        state: on
+        rgb_color: [250,162,71]
+        brightness: 100
+      light.led6:
+        state: on
+        rgb_color: [255,126,0]
+        brightness: 100
+      light.chair: off
+      light.fan: off
+      light.06f23e: off
+      light.20bc14: off
+      light.3dfafe: off
+      light.3df6f3: off
+      
+      light.led3: off
+      
+      
+      light.037577: off 
+      light.led5: off 
+  - name: TV Dark
+    entities: 
+      light.3162e3: off
+      light.20bc14: off
+      light.3dfafe: off
+      light.bruh_led6:
+        state: on
+        rgb_color: [255,126,0]
+        brightness: 100
+      light.led2:
+        state: on
+        rgb_color: [225,62,7]
+        brightness: 100
+      light.led6:
+        state: on
+        rgb_color: [25,162,7]
+        brightness: 100
+      light.chair: on
+      media_player.frreceiver:
+        source: Video 2  
+
+# Example configuration.yaml entry using 'input_number' in an action in an automation
+input_select:
+  
+  hass_theme:
+    name: HASS Themes
+    options:
+      - default
+      - night
+      - wood
+      - PmxMonolight
+      - vintage
+      - dark_blue
+      - dark_theme
+      - teal_theme
+      - dark_cyan
+      - dark_red
+      - christmas
+      - solarized_light
+      - midnight
+      - teal
+    initial: default
+    icon: mdi:theme-light-dark
+
+  scene_select:
+    name: Scene Select
+    options:
+      - Select
+      - Movies
+      - Romantic
+      - Reading
+      - Relax
+      - 'OFF'
+    initial: 'Select'
+  alexa:
+    name: Alexa
+    options:
+      - None
+      - kitchen_deck
+      - media_player.bathroom
+      - randys_fire_tv
+      - media_player.kitchen
+      - media_player.all
+    initial: None
+    icon: mdi:target
+
+
+input_text:
+  alexa_tts:
+    name: Alexa TTS
+    initial: Hello
+
+
+input_number:
+
+  office_brightness:
+    name: Brightness Office
+    initial: 100
+    min: 0
+    max: 100
+    step: 1
+#input_number: Alexa
+  alexa_volume:
+    name: Alexa Volume
+    initial: 4
+    min: 1
+    max: 10
+    step: 1
+#
+  target_temp:
+    name: Target Heater Temperature Slider
+    min: 55
+    max: 80
+    step: 1
+    unit_of_measurement: step  
+    icon: mdi:target
+# Example configuration.yaml entry using 'input_number' as a delay in an automation
+#input_number:
+  minutes:
+    name: minutes
+    icon: mdi:clock-start
+    initial: 3
+    min: 0
+    max: 6
+    step: 1
+    
+  seconds:
+    name: seconds
+    icon: mdi:clock-start
+    initial: 30
+    min: 0
+    max: 60
+    step: 10
+    
+  timer_delay_slider:
+      name: Delay Values
+      initial: 20
+      min: 2
+      max: 20
+      step: 2
+      icon: mdi:camera-timer
+  office_light_brightness:
+      name: Brightness
+      initial: 100
+      min: 0
+      max: 100
+      step: 5
+      icon: mdi:brightness-auto
+mqtt:
+  broker: 192.168.1.50
+  port: 1883
+  client_id: home-assistant-1
+  keepalive: 60
+  username: rc
+  password: !secret mqtt
+  protocol: 3.1
+  birth_message:
+    topic: "tele/hass1/LWT"
+    payload: "Online"
+    qos: 1
+    retain: false
+  will_message:
+    topic: "tele/hass1/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: false
+  discovery: true
+  discovery_prefix: homeassistant
+# Example of excluding entities
+mqtt_statestream:
+  base_topic: homeassistant
+  include:
+    domains:
+      - switch
+      - light
+      - sensor
+      - cover
+           
+    entities:
+      - sensor.theatre_humidity
+      - sensor.theatre_temperature
+
+# Example configuration.yaml entry
+# switch:
+#   platform: command_line
+#   switches:
+#     foscam_motion:
+#       command_on: 'curl -k "https://192.168.1.137:443/cgi-bin/CGIProxy.fcgi?cmd=setMotionDetectConfig&isEnable=1&usr=rc&pwd=rc"'
+#       command_off: 'curl -k "https://192.168.1.137:443/cgi-bin/CGIProxy.fcgi?cmd=setMotionDetectConfig&isEnable=0&usr=rc&pwd=rc"'
+#       command_state: 'curl -k --silent "https://192.168.1.137:443/cgi-bin/CGIProxy.fcgi?cmd=getMotionDetectConfig&usr=rc&pwd=rc" | grep -oP "(?<=isEnable>).*?(?=</isEnable>)"'
+#       value_template: '{{ value == "1" }}'
+
+canary:
+  username: rlust@mac.com
+  password: !secret canary
+
+# Text to speech
+tts:
+  - platform: google
+  
+  - platform: marytts
+    host: 'localhost'
+    port: 59125
+    codec: 'wav'
+    voice: 'cmu-slt-hsmm'
+    language: 'en-US'  
+device_tracker:
+  
+  - platform: owntracks
+    max_gps_accuracy: 200
+    waypoints: true
+    mqtt_topic: "owntracks/homeassistant/rc"
+    events_only: true
+    waypoint_whitelist:
+      - rc
+      - homeassistant
+    
+  - platform: google_maps
+    username: rclusthassio@gmail.com
+    password: !secret google_maps
+  - platform: unifi_direct
+    host: 192.168.1.50
+    username: rc
+    password: !secret unifi_direct
+  - platform: unifi
+    host: 192.168.1.50
+    verify_ssl: false
+    username: rc
+    password: !secret unifi
+    ssid_filter:
+      - 'Lust'
+      - 'ASUS_2G'
+
+cover:
+  
+  - platform: mqtt
+    name: "Big GD"
+    state_topic: "cmnd/3/POWER2"
+    command_topic: "cmnd/big/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "OFF"
+    state_closed: "ON"
+    optomistic: false
+    retain: true
+    #value_template: '{{ value.json_Switch2 }}'
+
+  - platform: mqtt
+    name: "Small GD"
+    state_topic: "cmnd/2/POWER2"
+    command_topic: "cmnd/small/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "OFF"
+    state_closed: "ON"
+    optomistic: false
+    retain: true
+  - platform: mqtt
+    name: "Small GD Insteon"
+    state_topic: "house/devices/1878147841/binaryInput2.ui"
+    command_topic: "cmnd/small/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "open"
+    state_closed: "closed"
+    optomistic: false
+    retain: true
+    value_template: '{{ value.json_newValue }}'
+notify:
+  
+  # - name: kitchen
+  #   platform: rest
+  #   resource: 'https:/hassio.local/api/services/media_player/alexa_tts'
+  #   method: POST_JSON
+  #   data:
+  #     entity_id: 'media_player.kitchen'
+  #   headers: 
+  #     x-ha-access: rc514131
+  #     content-type: 'application/json'
+  - name: pushbullet
+    platform: pushbullet
+    api_key: o.WaI8Bn49axy7tiiMd2xfESGAScJ3j0yh
 media_player:
   - platform: panasonic_viera
-    host: 192.168.1.130
+    host: 192.168.1.132
     name: FR TV
   - platform: onkyo
     host: 192.168.1.145
     name: FRreceiver
 # Example configuration.yaml entry Google Play Music Desktop Player
 
-  - platform: plex
-  - platform: gpmdp
-    host: 192.168.1.110    
+  #- platform: plex
+  # - platform: gpmdp
+  #   host: 192.168.1.110    
   
   - platform: alexa
     email: "rlust@mac.com"
-    password: "Rc514131!"
+    password: !secret alaexa
     url: "amazon.com"
   
   - platform: kodi
-    name: OSMC
+    name: kodi
     host: 192.168.1.227
     port: 8080
     username: rc
-    password: rc
+    password: !secret kodi
+
 
   # - platform: itunes
   #   name: iTunes
@@ -292,74 +751,7 @@ media_player:
  # Mopidy RPI Audio addon for hass.io
   - platform: mpd
     host: 192.168.1.176
-    port: 6600
-  #  name: Pi Speaker
+    #port: 6600
+    name: Pi Speaker
  # Example configuration.yaml platform entry
 
-insteon_local:
-  host: 192.168.1.111
-  username: Incatasi
-  password: 9UnEUCqL
-  timeout: 30
-  port: 25105
-cover:
-  
-  - platform: mqtt
-    name: "Big GD"
-    state_topic: "cmnd/3/POWER2"
-    command_topic: "cmnd/big/POWER"
-    payload_open: "ON"
-    payload_close: "ON"
-    payload_stop: "ON"
-    state_open: "ON"
-    state_closed: "OFF"
-    optomistic: false
-    retain: false
-
-  - platform: mqtt
-    name: "Small GD"
-    state_topic: "cmnd/2/POWER2"
-    command_topic: "cmnd/small/POWER"
-    payload_open: "ON"
-    payload_close: "ON"
-    payload_stop: "ON"
-    state_open: "ON"
-    state_closed: "OFF"
-    optomistic: false
-    retain: false
-
-notify:
-  - name: pushbullet
-    platform: pushbullet
-    api_key: o.WaI8Bn49axy7tiiMd2xfESGAScJ3j0yh
-
-#  - platform: ios
-#    name: iOSiPhone RC
-#    target: '32c8787a-11e3-3bd2-bb29-f9d8daaa900f'
-
-    
-#  - platform: ios
-#    name: IOSipad Kim
-#    target: '8e6ac0bd-db13-3c92-aecd-b5d69d8e228a'
-  
-  - name: Growl
-    platform: gntp
-    hostname: 192.168.1.110   
-  - name: Notify group
-    platform: group
-    services:
-      - service: html5
-        data:
-          target: "imacoffice"
-      - service: html5_nexus  
-      
-  - name: IOS Group Notify
-    platform: group
-    services:
-      - service: ios_iphone_randy
-      - service: ios_iphone_kim 
-      - service: iphone_randy
-      - service: alex_lust_phone
-      - service: ipad
-
-      
