@@ -7,6 +7,26 @@
 #     - light.plate03_backlight
 #     - light.plate04_backlight
 
+sonoff:
+    name: "Sonoff Tasmota"
+    control: hidden
+    entities:
+      - sensor.sonoff_ip
+      - script.get_sonoff_ip
+stocks:
+      name: Stocks
+      entities:
+        - sensor.stocks_att
+        - sensor.stocks_prk
+        - sensor.stocks_dgro
+fanenergy:
+      name: Energy Use
+      entities:
+        - sensor.fan_voltage
+        - sensor.fan_current
+        - sensor.fan_power
+
+
 alexamedia:
   name: Alexa Devices
   entities:

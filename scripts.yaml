@@ -1,5 +1,10 @@
 
-
+get_sonoff_ip:
+  alias: Get Sonoff New IP (sonoff)
+  sequence:
+  - data:
+      topic: cmnd/sonoff/ipaddress
+    service: mqtt.publish
 alexa_play:
   sequence:
     - service: media_player.media_play

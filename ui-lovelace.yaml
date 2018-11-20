@@ -18,7 +18,7 @@ views:
     id: Londondale
     background: radial-gradient(crimson, skyblue)
     theme: dark-mode
-    
+
     cards:
       - type: horizontal-stack
         cards:
@@ -29,14 +29,13 @@ views:
           - type: entity-button
             entity: cover.small_gd
             tap_action: more-info
-            hold_action: toggle  
-      
+            hold_action: toggle
+
     #cards:
-      
       - id: 6dca8229ec67426fbe9d00102cdb9c26  # Automatically created id
         type: picture-entity
         title: Garage
-        entity: camera.garage
+        entity: camera.garage_2
         camera_image: camera.garage
         show_info: true
         tap_action: dialog
@@ -67,7 +66,7 @@ views:
         show_header_toggle: true
         entities:
           - binary_sensor.multisensor_motion
-          - light.multisensor_light
+          - light.bruh_led
           - sensor.multisensor_brightness_2
           - sensor.multisensor_humidity
           - sensor.multisensor_temperature
@@ -76,7 +75,7 @@ views:
         trackers:
           - sensor.custom_card_tracker
           - sensor.custom_component_tracker
-      
+
       - id: f26cb0bc33d84b19b6cd0c4fb07d0a70  # Automatically created id
         type: entities
         title: Temperature
@@ -160,8 +159,10 @@ views:
         title: LED
         show_header_toggle: true
         entities:
-          - switch.led6
+          - light.bruh_led6
           - switch.led5
+          - light.led2
+          - light.led3
       - id: f3cb3ddbf61140eeb54d41fad713fc3b  # Automatically created id
         type: entities
         title: Master Bedroom
@@ -201,6 +202,7 @@ views:
           - device_tracker.google_maps_106953152375077209383
           - device_tracker.google_maps_114193578345566022352
           - device_tracker.homeassistant_rc
+          - device_tracker.homeassistant_kim
       - id: e6b64832dd2347328e0dec9e2dcd1ff3  # Automatically created id
         type: entities
         title: Night Lights
@@ -220,9 +222,9 @@ views:
         style:
           - font-size: 12px
           - font-weight: bold
-      
 
-      
+
+
       - id: ed19320ef2394ceea5f5c246b9fe4e08  # Automatically created id
         type: entities
         title: Cars
@@ -247,26 +249,26 @@ views:
           - sensor.last_boot
           - sensor.processor_use
           - sensor.disk_use_percent_home
-      - id: cb01531c6c9c4b66804c07dd6185647e  # Automatically created id
-        type: custom:canvas-gauge-card
-        entity: sensor.processor_use
-        card_height: 125
-        gauge:
-          type: radial-gauge
-          title: Processor (%)
-          width: 220
-          height: 220
-          minValue: 0
-          maxValue: 100
-          startAngle: 30
-          ticksAngle: 180
-          valueBox: false
-          majorTicks: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90',
-            '100']
-          minorTicks: 2
-          strokeTicks: true
-          highlights: [{from: 80, to: 100, color: 'rgba(200, 50, 50, .75)'}]
-          borders: false
+      # - id: cb01531c6c9c4b66804c07dd6185647e  # Automatically created id
+      #   type: custom:canvas-gauge-card
+      #   entity: sensor.processor_use
+      #   card_height: 125
+      #   gauge:
+      #     type: radial-gauge
+      #     title: Processor (%)
+      #     width: 220
+      #     height: 220
+      #     minValue: 0
+      #     maxValue: 100
+      #     startAngle: 30
+      #     ticksAngle: 180
+      #     valueBox: false
+      #     majorTicks: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90',
+      #       '100']
+      #     minorTicks: 2
+      #     strokeTicks: true
+      #     highlights: [{from: 80, to: 100, color: 'rgba(200, 50, 50, .75)'}]
+      #     borders: false
 
       - id: 407d07499f264f0b914c9bfd26c27daa  # Automatically created id
         type: gauge
@@ -526,6 +528,41 @@ views:
       - id: 6cd499acacbe48c4a4de421efde757d6  # Automatically created id
         type: media-control
         entity: media_player.microsoft_edge
+  - title: Stock
+    id: Stock Sensors
+    background: radial-gradient(crimson, skyblue)
+    theme: dark-mode
+    cards:
+      - id: 5ccc0938589442658254c13d1cb1aafa  # Automatically created id
+        type: entities
+        title: Stock Prices
+        show_header_toggle: true
+
+        entities:
+          - sensor.stocks_att
+          - sensor.stocks_dgro
+          - sensor.stocks_prk
+
+
+      - id: 7204b582b940ad93acaff98aa71b0c49  # Automatically created id
+        type: sensor
+        entity: sensor.stocks_att
+        name: Price AT&T
+        height: 200
+        line_color: '#3498db'
+      - id: 75dc8df7c2c24436946485c5fdd140f8  # Automatically created id
+        type: sensor
+        entity: sensor.stocks_dgro
+        name: DGRO Graph
+        height: 100
+        line_color: '#3498db'
+      - id: 93480a4737e3435798f49cf8eeb804b2  # Automatically created id
+        type: sensor
+        entity: sensor.stocks_prk
+        name: PRK Graph
+        height: 100
+        line_color: '#3498db'
+        unit_of_measurement: '$'
   - title: Multi-Sensor
     id: BRUH Sensors
     background: radial-gradient(crimson, skyblue)
@@ -686,7 +723,7 @@ views:
           - sensor.shed_temperature
           - sensor.shed_humidity
           - switch.shed_esphome_restart
-      
+
   - id: 5  # Automatically created id
     title: Alarm
     icon: mdi:alarm-light
@@ -723,7 +760,6 @@ views:
         title: LEDs
         show_header_toggle: true
         entities:
-          
           - switch.led5
           - light.led2
           - light.led3
@@ -973,13 +1009,13 @@ views:
       - id: 53eaffc935144be5b7516cd4394d7482  # Automatically created id
         type: gauge
         #title: With Severity
-        title: CPU Temp
+        title: Theatre Temp
         unit_of_measurement: F
-        entity: sensor.cpu_temp
+        entity: sensor.theatre_temperature
         severity:
-          green: 0
-          yellow: 75
-          red: 124
+          green: 68
+          yellow: 63
+          red: 59
   - id: 10  # Automatically created id
     title: Environment
     icon: mdi:thermometer

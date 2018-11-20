@@ -1,9 +1,9 @@
 homeassistant:
   packages: !include_dir_named packages
-  # v 1.7 12--18
+  # v 1.8 11-19-18
   # New fresh install hassos on VVB Started 10/25/18
   # Name of the location where Home Assistant is running
-  name: Hassio Virtual
+  name: Win10 Hassio Virtual
 
   # Location required to calculate the time the sun rises and sets
   latitude: 40.0673
@@ -65,18 +65,18 @@ tuya:
 
 # View all events in a logbook
 recorder:
-  purge_keep_days: 5
-  purge_interval: 1
+  purge_keep_days: 20
+  #purge_interval: 1
   #db_url: sqlite:////home/user/.homeassistant/test
-  exclude:
-    domains:
-      #- automation
-      - weblink
-      - updater
-    entities:
-      - sun.sun # Don't record sun data
-      - sensor.last_boot # Comes from 'systemmonitor' sensor platform
-      - sensor.date
+  # exclude:
+  #   domains:
+  #     #- automation
+  #     - weblink
+  #     - updater
+  #   entities:
+  #     - sun.sun # Don't record sun data
+  #     - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+  #     - sensor.date
 logbook:
 
 
@@ -93,12 +93,28 @@ logger:
     homeassistant.components.fan.insteon: debug
     homeassistant.components.cover.insteon: debug
 history:
-  include:
-    domains:
-      - sensor
-      - switch
-      - media_player
+  # include:
+  #   domains:
+  #     - sensor
+  #     - switch
+  #     - media_player
+  #     - cover
 # Enables a map showing the location of tracked devices
+history_graph:
+  stocks:
+    entities:
+      - sensor.stock_att
+      - sensor.stock_prk
+      - sensor.stock_dgro
+    hours_to_show: 72
+    refresh: 60
+  fanenergy:
+    entities:
+      - sensor.fan_voltage
+      - sensor.fan_current
+      - sensor.fan_power
+    hours_to_show: 120
+    # refresh: 60
 map:
 
 # Track the sun
@@ -129,7 +145,7 @@ cloud:
         light.3dfafe:
           name: Kitchen Cans
           description: The can lights in the kitchen
-        switch.stairs:
+        switch.led5:
           display_categories: LIGHT
 homekit:
   filter:
@@ -164,6 +180,11 @@ geo_location:
 
 
 camera:
+  - platform: uvc
+    nvr: 192.168.1.50
+    key: Y1hxhO3qGhjtZsejhzwwAoq28PENlvdA
+    password: XL5Va4Dtvs
+  
   - platform: canary
   # Webcams
   #- platform: generic
@@ -214,10 +235,23 @@ remote: !include remote.yaml
 #secret: !include secrets.yaml
 
 panel_iframe:
+  router:
+    title: 'Router'
+    url: 'http://192.168.1.1'
+  unifi:
+    title: 'Unifi'
+    url: 'https://192.168.1.50:8443/manage/site/default/dashboard'
+  indigo:
+    title: 'Indigo'
+    url: 'http://home.rlust.net:8176'
+  sonweb:
+    title: 'SonOffs'
+    url: 'http://192.168.1.234:9541/login'
+  
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://hassio.local:3218
+    url: http://192.168.1.234:3218
 insteon:
   host: 192.168.1.111
   ip_port: 25105
@@ -697,11 +731,12 @@ device_tracker:
   - platform: owntracks
     max_gps_accuracy: 200
     waypoints: true
-    mqtt_topic: "owntracks/homeassistant/rc"
-    events_only: true
+    mqtt_topic: "owntracks/#"
+    events_only: false
     waypoint_whitelist:
       - rc
       - homeassistant
+      - kim
     
   - platform: google_maps
     username: rclusthassio@gmail.com
@@ -724,25 +759,32 @@ cover:
   - platform: mqtt
     name: "Big GD"
     state_topic: "cmnd/3/POWER2"
+    #state_topic: "tele/big/SENSOR"
+    #value_template: '{{value.json.Switch2}}'
     command_topic: "cmnd/big/POWER"
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
-    state_open: "OFF"
-    state_closed: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    availability_topic: "tele/big/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"
     optomistic: false
     retain: true
     #value_template: '{{ value.json_Switch2 }}'
 
   - platform: mqtt
     name: "Small GD"
+    #state_topic: "tele/small/SENSOR"
+    #value_template: '{{value.json.Switch2}}'
     state_topic: "cmnd/2/POWER2"
     command_topic: "cmnd/small/POWER"
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
-    state_open: "OFF"
-    state_closed: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
     optomistic: false
     retain: true
   - platform: mqtt
@@ -829,6 +871,26 @@ binary_sensor:
     payload_on: "774B0A"
     payload_off: "774B0E"
     device_class: Door
+    optimistic: false
+    qos: 1
+    retain: false
+  - platform: mqtt
+    name: "Garage Motion RF"
+    state_topic: "tele/rfbridge/RESULT"
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: "84E86A"
+    payload_off: "84E86Aoff"
+    device_class: motion
+    optimistic: false
+    qos: 1
+    retain: false
+  - platform: mqtt
+    name: "Office Motion RF"
+    state_topic: "tele/rfbridge/RESULT"
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: "474B2A"
+    payload_off: "474B2Aoff"
+    device_class: motion
     optimistic: false
     qos: 1
     retain: false

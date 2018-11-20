@@ -1,24 +1,488 @@
 
+09aa01ac381700qv:
+  hide_if_away: false
+  icon:
+  mac: 64:16:66:01:82:89
+  name: 09AA01AC381700QV
+  picture:
+  track: true
+
+amazon273b1ffcd:
+  hide_if_away: false
+  icon:
+  mac: F0:81:73:1C:AE:2A
+  name: amazon-273b1ffcd
+  picture:
+  track: true
+
+8c2daa358561:
+  hide_if_away: false
+  icon:
+  mac: 8C:2D:AA:35:85:61
+  name: 8c2daa358561
+  picture:
+  track: true
+
+randysmbp:
+  hide_if_away: false
+  icon:
+  mac: A0:99:9B:07:4C:E9
+  name: Randys-MBP
+  picture:
+  track: true
+
+18fe34d4c2b6:
+  hide_if_away: false
+  icon:
+  mac: 18:FE:34:D4:C2:B6
+  name: 18fe34d4c2b6
+  picture:
+  track: true
+
+sonoff_3:
+  hide_if_away: false
+  icon:
+  mac: EC:FA:BC:07:66:AA
+  name: sonoff 3
+  picture:
+  track: true
+
+7c70bc550662:
+  hide_if_away: false
+  icon:
+  mac: 7C:70:BC:55:06:62
+  name: 7c70bc550662
+  picture:
+  track: true
+
+led2:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:12:10:53
+  name: led2
+  picture:
+  track: true
+
+hfa11:
+  hide_if_away: false
+  icon:
+  mac: AC:CF:23:5D:50:9D
+  name: HF-A11
+  picture:
+  track: true
+
+led6:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:3C:8A:4D
+  name: led6
+  picture:
+  track: true
+
+fireplace:
+  hide_if_away: false
+  icon:
+  mac: 68:C6:3A:8A:83:04
+  name: fireplace
+  picture:
+  track: true
+
+e8abfa10ff05:
+  hide_if_away: false
+  icon:
+  mac: E8:AB:FA:10:FF:05
+  name: e8abfa10ff05
+  picture:
+  track: true
+
+rfbridge4688:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:CA:D2:50
+  name: rfbridge-4688
+  picture:
+  track: true
+
+'183425999':
+  hide_if_away: false
+  icon:
+  mac: BC:1C:81:4B:D9:1A
+  name: '183425999'
+  picture:
+  track: true
+
+esp_805ad6:
+  hide_if_away: false
+  icon:
+  mac: 60:01:94:80:5A:D6
+  name: ESP 805AD6
+  picture:
+  track: true
+
+shed:
+  hide_if_away: false
+  icon:
+  mac: B4:E6:2D:34:E4:B0
+  name: shed
+  picture:
+  track: true
+
+5ccf7fc6dff5:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:C6:DF:F5
+  name: 5ccf7fc6dff5
+  picture:
+  track: true
+
+esp_94f476:
+  hide_if_away: false
+  icon:
+  mac: 68:C6:3A:94:F4:76
+  name: ESP 94F476
+  picture:
+  track: true
+
+heat15:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:39:DE:35
+  name: Heat-15
+  picture:
+  track: true
+
+esp_954d42:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:95:4D:42
+  name: ESP 954D42
+  picture:
+  track: true
+
+5ccf7fa79e02:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:A7:9E:02
+  name: 5ccf7fa79e02
+  picture:
+  track: true
+
+foyer1907:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:95:47:73
+  name: foyer-1907
+  picture:
+  track: true
+
+600194172edc:
+  hide_if_away: false
+  icon:
+  mac: 60:01:94:17:2E:DC
+  name: 600194172edc
+  picture:
+  track: true
+
+e8abfa4decfc:
+  hide_if_away: false
+  icon:
+  mac: E8:AB:FA:4D:EC:FC
+  name: e8abfa4decfc
+  picture:
+  track: true
+
+harmonyhub:
+  hide_if_away: false
+  icon:
+  mac: 00:04:20:FF:CD:53
+  name: HarmonyHub
+  picture:
+  track: true
+
+esp_0caad0:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:0C:AA:D0
+  name: ESP 0CAAD0
+  picture:
+  track: true
+
+esp_0cae44:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:0C:AE:44
+  name: ESP 0CAE44
+  picture:
+  track: true
+
 iphonerc:
   hide_if_away: false
   icon:
-  mac:
+  mac: 68:EF:43:C5:93:5A
   name: iPhonerc
+  picture:
+  track: true
+
+google_maps_114193578345566022352:
+  hide_if_away: false
+  icon:
+  mac:
+  name: google maps 114193578345566022352
+  picture: https://lh4.googleusercontent.com/-FzvtJU_MqG4/AAAAAAAAAAI/AAAAAAAAEGU/BDxYehkkEzU/photo.jpg
+  track: true
+
+google_maps_106953152375077209383:
+  hide_if_away: false
+  icon:
+  mac:
+  name: google maps 106953152375077209383
+  picture: https://lh6.googleusercontent.com/-kjAq7dvL1EY/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaNtyDw7L213uQXdCO9Ayb6mtoQoDQ/mo/photo.jpg
+  track: true
+
+shop:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:0B:71:2A
+  name: shop
+  picture:
+  track: true
+
+oled2027:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:3C:87:EB
+  name: oled-2027
+  picture:
+  track: true
+
+f80d604cca94:
+  hide_if_away: false
+  icon:
+  mac: F8:0D:60:4C:CA:94
+  name: f80d604cca94
   picture:
   track: true
 
 kimiphone:
   hide_if_away: false
   icon:
-  mac:
-  name: Kim iphone
+  mac: 7C:01:91:49:CD:CA
+  name: Kim-iphone
   picture:
   track: true
 
-alexlustphone:
+e4e4abce7374:
+  hide_if_away: false
+  icon:
+  mac: E4:E4:AB:CE:73:74
+  name: e4e4abce7374
+  picture:
+  track: true
+
+8871e5d4d2e0:
+  hide_if_away: false
+  icon:
+  mac: 88:71:E5:D4:D2:E0
+  name: 8871e5d4d2e0
+  picture:
+  track: true
+
+ipadkim:
+  hide_if_away: false
+  icon:
+  mac: 88:E9:FE:3D:14:F8
+  name: iPad-Kim
+  picture:
+  track: true
+
+rlustt430:
+  hide_if_away: false
+  icon:
+  mac: 84:3A:4B:36:D1:0C
+  name: RLUST-T430
+  picture:
+  track: true
+
+deck:
+  hide_if_away: false
+  icon:
+  mac: 60:01:94:17:40:7C
+  name: deck
+  picture:
+  track: true
+
+master2:
+  hide_if_away: false
+  icon:
+  mac: 30:AE:A4:73:A5:E4
+  name: master2
+  picture:
+  track: true
+
+master:
+  hide_if_away: false
+  icon:
+  mac: B4:E6:2D:87:17:D5
+  name: master
+  picture:
+  track: true
+
+amazon23abc2567:
+  hide_if_away: false
+  icon:
+  mac: B0:FC:0D:9B:1E:D9
+  name: amazon-23abc2567
+  picture:
+  track: true
+
+elizabedsiphone:
+  hide_if_away: false
+  icon:
+  mac: B8:C1:11:2B:6D:DE
+  name: ElizabedsiPhone
+  picture:
+  track: true
+
+elizabeplewatch:
+  hide_if_away: false
+  icon:
+  mac: E4:E4:AB:CD:2F:8A
+  name: ElizabepleWatch
+  picture:
+  track: true
+
+00004876f501:
+  hide_if_away: false
+  icon:
+  mac: 00:00:48:76:F5:01
+  name: 00004876f501
+  picture:
+  track: true
+
+esp_523787:
+  hide_if_away: false
+  icon:
+  mac: B4:E6:2D:52:37:87
+  name: ESP 523787
+  picture:
+  track: true
+
+68c63a95a32b:
+  hide_if_away: false
+  icon:
+  mac: 68:C6:3A:95:A3:2B
+  name: 68c63a95a32b
+  picture:
+  track: true
+
+5ccf7fc679cc:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:C6:79:CC
+  name: 5ccf7fc679cc
+  picture:
+  track: true
+
+alarm:
+  hide_if_away: false
+  icon:
+  mac: B4:E6:2D:34:A8:B5
+  name: alarm
+  picture:
+  track: true
+
+homeassistant_rc:
   hide_if_away: false
   icon:
   mac:
-  name: "Alex Lust Phone \U0001F991"
+  name: homeassistant
+  picture:
+  track: true
+
+oled5318:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:00:14:C6
+  name: oled-5318
+  picture:
+  track: true
+
+18fe34e0c516:
+  hide_if_away: false
+  icon:
+  mac: 18:FE:34:E0:C5:16
+  name: 18fe34e0c516
+  picture:
+  track: true
+
+plate01:
+  hide_if_away: false
+  icon:
+  mac: A0:20:A6:06:2E:C4
+  name: plate01
+  picture:
+  track: true
+
+plate03:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:D9:60:0D
+  name: plate03
+  picture:
+  track: true
+
+plate01_2:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:39:DE:C8
+  name: plate01
+  picture:
+  track: true
+
+wavebig:
+  hide_if_away: false
+  icon:
+  mac: 24:0A:C4:A3:C0:58
+  name: wavebig
+  picture:
+  track: true
+
+000c1e036a23:
+  hide_if_away: false
+  icon:
+  mac: 00:0C:1E:03:6A:23
+  name: 000c1e036a23
+  picture:
+  track: true
+
+amazonbcb9116ee:
+  hide_if_away: false
+  icon:
+  mac: 44:65:0D:B0:BE:11
+  name: amazon-bcb9116ee
+  picture:
+  track: true
+
+big1814:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:A0:07:16
+  name: big-1814
+  picture:
+  track: true
+
+desktopethim0o:
+  hide_if_away: false
+  icon:
+  mac: 10:0B:A9:80:1D:68
+  name: DESKTOP-ETHIM0O
+  picture:
+  track: true
+
+84f3eb04f8b6:
+  hide_if_away: false
+  icon:
+  mac: 84:F3:EB:04:F8:B6
+  name: 84f3eb04f8b6
   picture:
   track: true

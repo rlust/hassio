@@ -1,5 +1,23 @@
 - platform: yr
 
+- platform: rest
+  name: HAI Alarm Status
+  resource: http://192.168.1.110:9399/api/controller.areas
+  username: rc
+  password: rc
+  authentication: basic
+  json_attributes: 
+    - hasAlarm
+    - isArmed
+    - alarmDescription
+    - alarms
+    - isArming
+  value_template: '{{value_json.isArmed}}'
+
+- platform: mqtt
+  name: "SonOff IP"
+  state_topic: 'stat/#'
+  value_template: "{{ value_json.IPAddress1.split(' ')[1].replace('(','').replace(')','') }}"
 - platform: alpha_vantage
   api_key: A7ACIM69KYXNEOTN
   symbols:
@@ -51,7 +69,59 @@
   #   - QQQ
   #   - PTIAX
   #   - .DJI .INX .IXIC
-
+- platform: rest
+  resource: http://ip.jsontest.com
+  name: External IP
+  #scan_interval: '11:01'
+  value_template: '{{ value_json.ip }}'
+- platform: rest
+  name: Stocks AT&T
+  resource: https://api.robinhood.com/quotes/T/
+  json_attributes: 
+    - last_trade_price
+    - ask_price
+    - previous_close
+    - symbol
+    - ask_size
+  value_template: '{{value_json.last_trade_price}}'
+- platform: template
+  sensors:
+    miner_data:
+      friendly_name: 'Stock AT&T'
+      value_template: '{{ states.sensor.miners.attributes.last_trade_price}}'
+      unit_of_measurement: $
+- platform: rest
+  name: Stocks PRK
+  resource: https://api.robinhood.com/quotes/PRK/
+  json_attributes: 
+    - last_trade_price
+    - ask_price
+    - previous_close
+    - symbol
+    - ask_size
+  value_template: '{{value_json.last_trade_price}}'
+- platform: template
+  sensors:
+    miner_data:
+      friendly_name: 'Stock PRK'
+      value_template: '{{ states.sensor.miners.attributes.last_trade_price}}'
+      unit_of_measurement: $
+- platform: rest
+  name: Stocks DGRO
+  resource: https://api.robinhood.com/quotes/DGRO/
+  json_attributes: 
+    - last_trade_price
+    - ask_price
+    - previous_close
+    - symbol
+    - ask_size
+  value_template: '{{value_json.last_trade_price}}'
+- platform: template
+  sensors:
+    miner_data:
+      friendly_name: 'Stock DGRO'
+      value_template: '{{ states.sensor.miners.attributes.last_trade_price}}'
+      unit_of_measurement: $
 
 - platform: openexchangerates
   api_key: ecc54bc134fc4a4eb95fbac35268276c

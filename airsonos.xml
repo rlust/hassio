@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<airupnp>
+<common>
+<enabled>1</enabled>
+<max_volume>100</max_volume>
+<codec>flac</codec>
+<metadata>1</metadata>
+<artwork></artwork>
+<latency>1000:2000</latency>
+</common>
+<main_log>info</main_log>
+<upnp_log>info</upnp_log>
+<util_log>info</util_log>
+<raop_log>info</raop_log>
+<log_limit>-1</log_limit>
+<device>
+<udn>uuid:JPLAY192.168.1.158-MediaRenderer</udn>
+<name>JPLAY FEMTO+</name>
+<mac>bb:bb:4e:74:63:f0</mac>
+<enabled>1</enabled>
+</device>
+<device>
+<udn>uuid:JPLAY192.168.1.219-MediaRenderer</udn>
+<name>JPLAY FEMTO+</name>
+<mac>bb:bb:8c:2c:b0:f5</mac>
+<enabled>1</enabled>
+</device>
+<device>
+<udn>uuid:JPLAY169.254.249.23-MediaRenderer</udn>
+<name>JPLAY FEMTO+</name>
+<mac>bb:bb:63:f8:29:bb</mac>
+<enabled>1</enabled>
+</device>
+<device>
+<udn>uuid:3d54bfc1-0b1b-91aa-23f4-25545ea4d860</udn>
+<name>osmc+</name>
+<mac>bb:bb:b7:65:07:5b</mac>
+<enabled>1</enabled>
+</device>
+<device>
+<udn>uuid:4D454930-0100-1000-8001-8CC1216FB245</udn>
+<name>VIERA ST60+</name>
+<mac>bb:bb:f1:9c:91:55</mac>
+<enabled>1</enabled>
+</device>
+<device>
+<udn>uuid:7fb0c65c-87c6-5cb9-14cf-5c0987b98e37</udn>
+<name>Family Room Onkyo+</name>
+<mac>bb:bb:25:fa:60:82</mac>
+<enabled>1</enabled>
+</device>
+</airupnp>
