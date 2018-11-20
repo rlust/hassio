@@ -1,0 +1,206 @@
+##############################################################################
+# The following devices are used by the demo automations, feel free to remove
+# these and/or replace with your own devices
+
+# Sensors for weather and media player information
+sensor:
+  - platform: yweather
+    name: Weather
+    monitored_conditions:
+      - weather_current
+      - temperature
+      - temp_min
+      - temp_max
+      - humidity
+  - platform: template
+    sensors:
+      media_player_title:
+        value_template: '{{ states.media_player.kodi.attributes.media_title }}'
+      media_player_artist:
+        value_template: '{{ states.media_player.kodi.attributes.media_artist }}'
+      media_player_volume:
+        value_template: '{{ states.media_player.kodi.attributes.volume_level }}'
+# - platform: octoprint
+  # name: OctoPrint
+  # monitored_conditions:
+    # - Current State
+    # - Temperatures
+    # - Job Percentage
+
+# octoprint:
+  # host: octoprint.local
+  # api_key: YOUROCTOPRINTAPIKEY
+
+media_player:
+  - platform: kodi
+    name: "media player.kodi"
+    host: 192.168.1.227
+    port: 8080
+    username: rc
+    password: rc
+
+alarm_control_panel:
+  - platform: manual
+    code: 1234
+
+light:
+  - platform: mqtt
+    name: "Light 1"
+    command_topic: "homeassistant/light/light1"
+    state_topic: "homeassistant/light/light1"
+    brightness_command_topic: "homeassistant/light/light1/bright"
+    brightness_state_topic: "homeassistant/light/light1/bright"
+  - platform: mqtt
+    name: "Light 2"
+    command_topic: "homeassistant/light/light2"
+    state_topic: "homeassistant/light/light2"
+    brightness_command_topic: "homeassistant/light/light2/bright"
+    brightness_state_topic: "homeassistant/light/light2/bright"
+  - platform: mqtt
+    name: "Light 3"
+    command_topic: "homeassistant/light/light3"
+    state_topic: "homeassistant/light/light3"
+    brightness_command_topic: "homeassistant/light/light3/bright"
+    brightness_state_topic: "homeassistant/light/light3/bright"
+
+##############################################################################
+# Create a group for the lights
+group:
+  light_toggle_group:
+    name: Light Toggle Group
+    view: no
+    entities:
+      - light.chair
+      - light.led2
+      - light.316993
+
+
+# - name: Lights On
+#   entities:
+#     light.light_1:
+#       state: on
+#       brightness: 255
+#     light.light_2:
+#       state: on
+#       brightness: 255
+#     light.light_3:
+#       state: on
+#       brightness: 255
+#     light.plate01_backlight:
+#       state: on
+#       brightness: 255
+
+# - name: Daylight
+#   entities:
+#     light.light_1:
+#       state: on
+#       brightness: 150
+#     light.light_2:
+#       state: on
+#       brightness: 150
+#     light.light_3:
+#       state: on
+#       brightness: 150
+#     light.plate01_backlight:
+#       state: on
+#       brightness: 150
+
+# - name: Night
+#   entities:
+#     light.light_1:
+#       state: on
+#       brightness: 50
+#     light.light_2:
+#       state: on
+#       brightness: 50
+#     light.light_3:
+#       state: on
+#       brightness: 50
+#     light.plate01_backlight:
+#       state: on
+#       brightness: 50
+scene:
+  - name: Lights Off
+    entities:
+      light.light_1:
+        state: off
+      light.light_2:
+        state: off
+      light.light_3:
+        state: off
+      light.plate01_backlight:
+        state: on
+        brightness: 40
+  - name: TV Time
+    entities:
+      switch.fireplace_basic_relay: on
+      light.led2:
+        state: on
+        rgb_color: [255,126,0]
+        brightness: 100
+      light.06f23e: 
+        state: on
+        brightness: 39
+      light.plate01_backlight:
+        state: on
+        brightness: 80
+      light.plate03_backlight:
+        state: on
+        brightness: 80
+      light.plate04_backlight:
+        state: on
+        brightness: 80
+      light.chair: on
+      media_player.fr_tv: on
+      media_player.viera_st60: on
+      media_player.frreceiver:
+        source: Video 2
+        state: on
+  - name: Bedtime
+    entities:
+      switch.fireplace_basic_relay: off
+      light.bruh_led6: off
+      media_player.fr_tv: off 
+      light.chair: off
+      light.fan: on
+      light.3162e3: off
+      light.20bc14: off
+      
+      light.3df6f3: off
+      light.06f23e: off
+      light.led6: off
+      light.led3: off
+      light.led2: off
+      light.foyer: off
+      light.037577: off 
+      light.led5: off 
+      switch.chandelier: off
+      light.02010565b4e62d523787: off
+      light.plate01_backlight:
+        state: on
+        brightness: 20
+      light.plate03_backlight:
+        state: on
+        brightness: 20
+      light.plate04_backlight:
+        state: on
+        brightness: 20
+  - name: Daytime
+    entities:
+      light.chair: off
+      light.fan: off
+      light.06f23e: off
+      light.20bc14: off
+      light.3dfafe: off
+      light.3df6f3: off
+      
+      light.led3: off
+      light.plate01_backlight:
+        state: on
+        brightness: 200
+      light.plate03_backlight:
+        state: on
+        brightness: 200
+      light.plate04_backlight:
+        state: on
+        brightness: 200
